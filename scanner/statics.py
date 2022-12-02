@@ -12,3 +12,19 @@ class TokenType(enum.Enum):
     SYMBOL = 'SYMBOL'
     COMMENT = 'COMMENT'
     WHITESPACE = 'WHITESPACE'
+
+class Common(enum.Enum):
+    EOF = 'EOF'
+class Transitions(enum.Enum):
+    DIGIT = '0-9'
+    NOT_DIGIT = '~(0-9)'
+    LETTER = 'a-zA-Z'
+    NOT_LETTER = '~(a-zA-Z)'
+    
+
+tokens = {
+    TokenType.KEYWORD: ['if', 'else', 'void', 'int', 'while', 'break', 'switch', 'default', 'case', 'return', 'endif'],
+    TokenType.SYMBOL: [';', ':', ',', '[', ']', '(', ')', '{', '}', '+', '-', '*', '=', '<', '==', '/'],
+    TokenType.COMMENT: {'/*': '*/', '//': ['\n', Common.EOF]},
+    TokenType.WHITESPACE: ['', '\n', '\r', '\t', '\v', '\f']
+}

@@ -1,26 +1,30 @@
 from writer import *
 from reader import *
+from dfa import DFA
 
-def validate_char(char):
-    pass
+class Scanner:
+    def __init__(self):
+        self.dfa = DFA()
+        self.dfa.define_dfa()
+        self.reader = Reader()
+        self.writer = Writer()
 
-def get_next_token(file, line_num):
-    detemined_tok = ''
+        self.line_num = 1
 
-    next_char = file.read(1)
-    validate_char(next_char)
+    def validate_char(self, char):
+        pass
+
+    def get_next_token(self, file, line_num):
+        detemined_tok = ''
+
+        next_char = file.read(1)
+        self.validate_char(next_char)
 
 
 
-def run_scanner():
-    line_num = 1
-
-    with open(INPUT_FILE_PATH, 'r', encoding='utf-8') as file:
+    def run_scanner(self):
+        first_ch = reader.get_next_char()
+        reader.start_pointer = 0
 
         while True:
-            token = get_next_token(file, line_num)
-            print(token)
-
-            if not token:
-                print('Reached end of file')
-                break
+            next_ch = reader.get_next_char()
