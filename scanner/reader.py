@@ -35,7 +35,6 @@ class Reader:
         else:
             return CharType.INVALID
         
-        
 
     def get_next_char(self):
         ch = self.input_file.read(1)

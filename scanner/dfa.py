@@ -16,6 +16,7 @@ class State:
         self.transitions[action] = dest_s
 
     def get_next_state(self, action):
+        print("=====", self.id, action, self.transitions[action].id)
         return self.transitions[action]
 
 
