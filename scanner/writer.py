@@ -1,32 +1,32 @@
-from .statics import *
+from statics import *
+
 
 class Writer:
-    def __init__(self):
-        self.token_table = []
-        self.token_table = []
-        self.token_table = []
-
-    def write_tokens(self, tokens: dict):
-        lines = list(tokens.keys())
+    def write_tokens(self, tokens_table: dict):
         with open(TOKENS_FILE_PATH, 'w') as f:
-            for l in lines:
-                f.writelines(f'{l}: {[t for t in tokens[l]]}\n')
+            for token in tokens_table:
+                f.writelines(f'{token}: {[t for t in tokens_table[token]]}\n')
 
-    def write_errors(self, errors: dict):
-        lines = list(tokens.keys())
+    def write_errors(self, errors_table: dict):
         with open(ERRORS_FILE_PATH, 'w') as f:
-            for l in lines:
-                f.writelines(f'{l}: {[t for t in errors[l]]}\n')
+            for token in errors_table:
+                f.writelines(f'{token}: {[t for t in errors_table[token]]}\n')
 
-    def write_symbols(self, symbols: dict):
-        lines = list(tokens.keys())
-        with open(TOKENS_FILE_PATH, 'w') as f:
-            for l in lines:
-                f.writelines(f'{l}: {[t for t in symbols[l]]}\n')
+    def write_symbols(self, symbols_table: list):
+        key_words = tokens[TokenType.KEYWORD]
+        with open(SYMBOLS_FILE_PATH, 'w') as f:
+            for k in key_words:
+                f.writelines(f'{key_words.index(k) + 1}: {k}\n')
+            for token in symbols_table:
+                f.writelines(f'{symbols_table.index(token) + len(key_words) + 1}: {token}\n')
 
-# if __name__ == "__main__":
-#     tokens = {1: [('KEYWORD', 'void'), ('ID', 'main'), ('SYMBOL', '('), ('KEYWORD', 'void'), ('SYMBOL', ')'),
-#                   ('SYMBOL', '{')],
-#               2: [('KEYWORD', 'int'), ('ID', 'a'), ('SYMBOL', '='), ('NUM', '0'), ('SYMBOL', ';')]}
-#     writer = Writer()
-#     writer.write_token(tokens)
+
+if __name__ == "__main__":
+    # tokens = {1: [('KEYWORD', 'void'), ('ID', 'main'), ('SYMBOL', '('), ('KEYWORD', 'void'), ('SYMBOL', ')'),
+    #               ('SYMBOL', '{')],
+    #           2: [('KEYWORD', 'int'), ('ID', 'a'), ('SYMBOL', '='), ('NUM', '0'), ('SYMBOL', ';')]}
+
+    symbols = ['a', 'b', 'cde']
+    writer = Writer()
+    # writer.write_tokens(tokens)
+    writer.write_symbols(symbols)
