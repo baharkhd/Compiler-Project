@@ -15,6 +15,7 @@ class TokenType(enum.Enum):
     SYMBOL = 'SYMBOL'
     COMMENT = 'COMMENT'
     WHITESPACE = 'WHITESPACE'
+    ERROR = 'ERROR'
 
 
 class Common(enum.Enum):
@@ -42,8 +43,10 @@ class CharType(enum.Enum):
     SYMBOL_NEQUAL_NSTAR = 'SYMBOL_NEQUAL_NSTAR'
     SINGLE_SYMBOL = ';|:|,|\[|\]|\(|\)|{|}|\+|-|<'
     WHITESPACE = '\s|\n|\t|\f|\r|\v'
+    WHITESPACE_EX_ENTER = '\s|\t|\f|\r|\v'
     EOF = 'EOF'
     EOF_ENTER = 'EOF|\n'
+    ENTER = '\n'
     EQUAL = '='
     NEQUAL = '^='
     STAR = '*'

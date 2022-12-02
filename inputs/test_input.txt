@@ -2,3 +2,8 @@ void main(void) {
 
 int a = 3d; 
 // def aa
+
+if ( d  <  1 ) {
+return 0;
+}
+// end of code
