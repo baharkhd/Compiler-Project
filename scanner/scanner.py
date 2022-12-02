@@ -1,12 +1,12 @@
-from writer import *
-from reader import *
-from dfa import DFA
+from .writer import *
+from .reader import *
+from .dfa import *
 
 
 class Scanner:
     def __init__(self):
-        dfa = DFA(Common.N_OF_STATES)
-        dfa.define_dfa()
+        self.dfa = DFA(Common.N_OF_STATES.value)
+        self.dfa.define_dfa()
         self.reader = Reader()
         self.writer = Writer()
         self.line_num = 1
@@ -14,13 +14,14 @@ class Scanner:
     def get_next_token(self, curr_state):
         while True:
             next_ch, next_ch_type = self.reader.get_next_char()
+            print("-----", next_ch, next_ch_type)
             if next_ch_type == CharType.INVALID:
                 # here we should raise INVALID error
                 pass
 
             next_state = curr_state.get_next_state(next_ch_type)
 
-            if not next_state:
+            if next_state is None:
                 # error state
                 pass
 

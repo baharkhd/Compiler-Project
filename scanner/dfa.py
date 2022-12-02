@@ -1,4 +1,4 @@
-from statics import *
+from .statics import *
 
 
 class State:
@@ -23,8 +23,8 @@ class DFA:
     def __init__(self, n):
         self.states = []
         for i in range(n):
-            if i in Common.FINAL_STATES:
-                if i in Common.STAR_STATES:
+            if i in Common.FINAL_STATES.value:
+                if i in Common.STAR_STATES.value:
                     self.states.append(State(i, is_final=True, has_star=True))
                 else:
                     self.states.append(State(i, is_final=True))

@@ -1,5 +1,4 @@
-from statics import *
-
+from .statics import *
 
 class Writer:
     def __init__(self):
