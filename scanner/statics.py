@@ -20,7 +20,17 @@ class Transitions(enum.Enum):
     NOT_DIGIT = '~(0-9)'
     LETTER = 'a-zA-Z'
     NOT_LETTER = '~(a-zA-Z)'
-    
+
+class CharType(enum.Enum):
+    DIGIT = '[0-9]'
+    NOT_DIGIT = '[^0-9]'  
+    LETTER = '[a-zA-Z]'
+    NOT_LETTER = '[^a-zA-Z]'
+    DIGIT_LETTER = '[a-zA-Z0-9]'
+    NOT_DIGIT_LETTER = '[^a-zA-Z0-9]'
+    SYMBOL_NEQUAL_NSTAR = 'SYMBOL_NEQUAL_NSTAR'
+    WHITESPACE = '\s|\n|\t|\f|\r|\v'
+    EOF = 'EOF'
 
 tokens = {
     TokenType.KEYWORD: ['if', 'else', 'void', 'int', 'while', 'break', 'switch', 'default', 'case', 'return', 'endif'],

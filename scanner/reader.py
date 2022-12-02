@@ -1,5 +1,5 @@
 from statics import *
-
+import re
 class Reader:
     def __init__(self):
         self.input_file = open(INPUT_FILE_PATH)
@@ -9,11 +9,21 @@ class Reader:
 
         self.read_string = ''
 
+
+    def get_char_type(self, char):
+        if re.match(CharType.DIGIT.value, char):
+            return CharType.DIGIT
+        elif re.match(CharType.LETTER.value, char):
+            return CharType.LETTER
+        elif char == '=':
+            return  
+        
+
     def get_next_char(self):
         ch = self.input_file.read(1)
         self.end_pointer += 1
         self.read_string += ch
-        return self.input_file.read(1)
+        return ch, self.get_char_type(ch)
 
     def read_input_file(self):
         with open(INPUT_FILE_PATH) as file:
