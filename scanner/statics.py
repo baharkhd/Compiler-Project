@@ -17,6 +17,8 @@ class TokenType(enum.Enum):
 
 class Common(enum.Enum):
     EOF = 'EOF'
+    N_OF_STATES = 19
+    FINAL_STATES = [2, 4, 5, 6, 8, 9, 13, 15, 16, 18]
 
 
 class Transitions(enum.Enum):
