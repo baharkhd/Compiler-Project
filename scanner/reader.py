@@ -53,7 +53,7 @@ class Reader:
                     break
                 self.string_read += next_char
 
-            print(self.string_read)
+            #print(self.string_read)
 
 
 #if __name__ == "__main__":
