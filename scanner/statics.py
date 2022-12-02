@@ -24,6 +24,7 @@ class Common(enum.Enum):
     FINAL_STATES = [2, 4, 5, 6, 8, 9, 13, 15, 16, 18]
     STAR_STATES = [2, 4, 9, 16, 18]
     ERROR_DETECTED = 'ERROR DETECTED'
+    NO_ERROR = 'There is no lexical error.'
 
 
 class Transitions(enum.Enum):
