@@ -18,7 +18,7 @@ class Scanner:
         #next_ch, next_ch_type = '&&&&&&', '&&&&&&'
 
         while True:
-            print("********* curr state *********", curr_state.id)
+            #print("********* curr state *********", curr_state.id)
             if not self.has_decreseaed:
                 next_ch, next_ch_type = self.reader.get_next_char()
             print("-----", next_ch, next_ch_type, next_ch == '\n', next_ch == " ")
@@ -87,8 +87,11 @@ class Scanner:
                 curr_state = next_state
 
         
+        
         if next_ch == CharType.EOF:
             return 'found_token', 'token_type', 'next_ch', 'next_ch_type', all_tokens, all_errors, all_keys_ids
+
+        print("------------", found_token, token_type)
 
         #if token_type == TokenType.ERROR:
         #    all_errors.append((self.line_num, found_token, 'ERROR'))
@@ -97,11 +100,13 @@ class Scanner:
             all_errors.append((self.line_num, found_token, token_type.value))
 
 
-        self.has_error = False  
-
-        if token_type != TokenType.WHITESPACE and token_type != TokenType.COMMENT and curr_state.id != 1 and not self.has_error:
+         
+#and curr_state.id != 1
+        if token_type != TokenType.WHITESPACE and token_type != TokenType.COMMENT and not self.has_error:
         #token_type != TokenType.ERROR:
             all_tokens.append((self.line_num, token_type.value, found_token))
+
+        self.has_error = False 
 
         #print("****", found_token, token_type)
         return found_token, token_type, next_ch, next_ch_type, all_tokens, all_errors, all_keys_ids

@@ -9,8 +9,8 @@
 9: case
 10: return
 11: endif
-15: b
-16: a
-18: e
-20: main
-21: cde
+12: cde
+13: b
+14: e
+15: a
+16: main

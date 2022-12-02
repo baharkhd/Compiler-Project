@@ -9,7 +9,7 @@ class Writer:
                 f.write(f'{token}: ')
                 for t in tokens_table[token]:
                     if t[0] != TokenType.KEYWORD_ID:
-                        print(t)
+                        #print(t)
                         f.write(f'({t[0]}, {t[1]}) ')
                     else:
                         if t[1] not in key_words:
