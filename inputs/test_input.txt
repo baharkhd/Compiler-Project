@@ -1,9 +1,12 @@
-void main(void) {
-
-int a! = 3d; 
-// def aa
-
-if ( d  <  1 ) {
-return 0;
-}
-// end of code
+void main (void) { int a = 0;
+// comment1
+a=2+2;
+a=a-3;
+cde=a;
+if (b /* comment2 */ == 3d) {
+a = 3;
+cd!e = 7; }
+else */ {
+b = a < cde;
+{cde = @2; }}
+return; /* comment 3 }

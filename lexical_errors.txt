@@ -1,1 +1,4 @@
-3: [('a!', 'Invalid input'), ('3d', 'Invalid number')]
+6: (3d, Invalid number) 
+8: (cd!, Invalid input) 
+9: (*/, Invalid number) 
+11: (@, Invalid input) 

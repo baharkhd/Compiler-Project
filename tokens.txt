@@ -1,5 +1,11 @@
-1: [('KEYWORD ID', 'void'), ('KEYWORD ID', 'main'), ('SYMBOL', '('), ('KEYWORD ID', 'void'), ('SYMBOL', ')'), ('SYMBOL', '{')]
-3: [('KEYWORD ID', 'int'), ('Invalid input', 'a!'), ('SYMBOL', '='), ('SYMBOL', ';')]
-6: [('KEYWORD ID', 'if'), ('SYMBOL', '('), ('KEYWORD ID', 'd'), ('SYMBOL', '<'), ('SYMBOL', ')'), ('SYMBOL', '{')]
-7: [('KEYWORD ID', 'return'), ('SYMBOL', ';')]
-8: [('SYMBOL', '}')]
+1: (KEYWORD ID, void) (KEYWORD ID, main) (SYMBOL, () (KEYWORD ID, void) (SYMBOL, )) (SYMBOL, {) (KEYWORD ID, int) (KEYWORD ID, a) (SYMBOL, =) (SYMBOL, ;) 
+3: (KEYWORD ID, a) (SYMBOL, =) (SYMBOL, +) (SYMBOL, ;) 
+4: (KEYWORD ID, a) (SYMBOL, =) (KEYWORD ID, a) (SYMBOL, -) (SYMBOL, ;) 
+5: (KEYWORD ID, cde) (SYMBOL, =) (KEYWORD ID, a) (SYMBOL, ;) 
+6: (KEYWORD ID, if) (SYMBOL, () (KEYWORD ID, b) (SYMBOL, ==) (SYMBOL, )) (SYMBOL, {) 
+7: (KEYWORD ID, a) (SYMBOL, =) (SYMBOL, ;) 
+8: (Invalid input, cd!) (KEYWORD ID, e) (SYMBOL, =) (SYMBOL, ;) (SYMBOL, }) 
+9: (KEYWORD ID, else) (Invalid number, */) (SYMBOL, {) 
+10: (KEYWORD ID, b) (SYMBOL, =) (KEYWORD ID, a) (SYMBOL, <) (KEYWORD ID, cde) (SYMBOL, ;) 
+11: (SYMBOL, {) (KEYWORD ID, cde) (SYMBOL, =) (Invalid input, @) (SYMBOL, ;) (SYMBOL, }) (SYMBOL, }) 
+12: (KEYWORD ID, return) (SYMBOL, ;) 
