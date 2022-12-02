@@ -15,7 +15,15 @@ class State:
     def add_transition(self, action, dest_s):
         self.transitions[action] = dest_s
 
-    def get_next_state(self, action):
+    def get_next_state(self, action, char=None):
+        if self.id == 14 and action == CharType.WHITESPACE and char != '\n':
+            action = CharType.WHITESPACE_EX_ENTER
+        
+        # Todo: probably encounter error for EOF too
+        if self.id == 14 and char == '\n':
+            action = CharType.ENTER
+            
+        #print("--------", self.id, action, self.transitions.keys())
         if action in self.transitions.keys():
             return self.transitions[action]
         else:
@@ -122,7 +130,17 @@ class DFA:
         self.states[12].add_transition(CharType.SLASH, self.states[13])
 
         #state14
-        self.states[14].add_transition(CharType.EOF_ENTER, self.states[15])
+        self.states[14].add_transition(CharType.EOF, self.states[15])
+        self.states[14].add_transition(CharType.ENTER, self.states[15])
+
+        self.states[14].add_transition(CharType.LETTER, self.states[14])
+        self.states[14].add_transition(CharType.DIGIT, self.states[14])
+        self.states[14].add_transition(CharType.WHITESPACE_EX_ENTER, self.states[14])
+        self.states[14].add_transition(CharType.SINGLE_SYMBOL, self.states[14])
+        self.states[14].add_transition(CharType.STAR, self.states[14])
+        self.states[14].add_transition(CharType.SLASH, self.states[14])
+        self.states[14].add_transition(CharType.EQUAL, self.states[14])
+        
 
         #state17
         # self.states[17].add_transition(CharType.NSLASH, self.states[18])

@@ -17,33 +17,46 @@ class Scanner:
         #next_ch, next_ch_type = '&&&&&&', '&&&&&&'
 
         while True:
-            #print(self.has_decreseaed)
+            print("********* curr state *********", curr_state.id)
             if not self.has_decreseaed:
                 next_ch, next_ch_type = self.reader.get_next_char()
-            print("-----", next_ch, next_ch_type, next_ch == '', next_ch == " ")
+            print("-----", next_ch, next_ch_type, next_ch == '\n', next_ch == " ")
             self.has_decreseaed = False
 
-            if next_ch_type == '':
-                # it is the end of file
+            if next_ch == '':
                 self.end_of_file = True
+                print(";;;;;;;;;;;;;;;;;")
+                next_ch = CharType.EOF
+                next_ch_type = CharType.EOF
+                break
+
+            if next_ch == '\n':
+                self.line_num += 1
+
+            #if next_ch_type == '':
+            #    # it is the end of file
+            #    self.end_of_file = True
             
             if next_ch_type == CharType.INVALID:
                 # here we should raise INVALID error
                 break
 
-            next_state = curr_state.get_next_state(next_ch_type)
+            next_state = curr_state.get_next_state(next_ch_type, next_ch)
+            
 
-            if next_state == 'ERROR':
+            if next_state == Common.ERROR_DETECTED:
                 # here we should handle error (using all_errors) => based on the current state
-                found_token = 'ERROR - NO TOKEN'
-                token_type = 'ERROR'
+                found_token = self.reader.string_read
+                token_type = TokenType.ERROR
                 break
+
+            #print("------", curr_state.id, next_ch_type, next_state.id)
 
             if next_state is None:
                 # error state
                 pass
 
-            print("++++++++++ next state:", next_state.id)
+            #print("++++++++++ next state:", next_state.id)
             if next_state.is_final:
                 #print("here", next_state.id)
                 if next_state.has_star:
@@ -61,8 +74,15 @@ class Scanner:
             else:
                 curr_state = next_state
 
+        
+        if next_ch == CharType.EOF:
+            return 'found_token', 'token_type', 'next_ch', 'next_ch_type', all_tokens, all_errors
+
+        if token_type == TokenType.ERROR:
+            all_errors.append((self.line_num, found_token, 'ERROR'))
             
-        if token_type != TokenType.WHITESPACE and token_type != TokenType.COMMENT:
+
+        if token_type != TokenType.WHITESPACE and token_type != TokenType.COMMENT and curr_state.id != 1 and token_type != TokenType.ERROR:
             all_tokens.append(found_token)
 
         #print("****", found_token, token_type)
@@ -81,6 +101,12 @@ class Scanner:
             next_token, next_token_type, next_ch, next_ch_type, all_tokens, all_errors = self.get_next_token(curr_state, next_ch, next_ch_type, all_tokens, all_errors)
             self.reader.reset_pointers(self.has_decreseaed)
             print("^^^^^^^^^", all_tokens)
+            print("&&&&&&&&&&&", all_errors)
+
+            if self.end_of_file:
+                break
+            #if next_ch_type == CharType.EOF:
+            #    break
 
         
 
