@@ -1,4 +1,4 @@
-from .statics import *
+from statics import *
 
 
 class State:

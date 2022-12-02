@@ -1,6 +1,6 @@
-from .writer import *
-from .reader import *
-from .dfa import *
+from writer import *
+from reader import *
+from dfa import *
 
 
 class Scanner:
@@ -22,7 +22,7 @@ class Scanner:
             #print("********* curr state *********", curr_state.id)
             if not self.has_decreseaed:
                 next_ch, next_ch_type = self.reader.get_next_char()
-            print("-----", self.line_num, curr_state.id, next_ch, next_ch_type, next_ch == '\n', next_ch == " ")
+            # print("-----", self.line_num, curr_state.id, next_ch, next_ch_type, next_ch == '\n', next_ch == " ")
             self.has_decreseaed = False
 
             if curr_state.id == 11:
@@ -41,7 +41,7 @@ class Scanner:
             #    self.end_of_file = True
             
             if next_ch_type == CharType.INVALID:
-                print("aloooooooooo")
+                # print("aloooooooooo")
                 # here we should raise INVALID error
                 self.has_error = True
 
@@ -66,13 +66,13 @@ class Scanner:
             #    break
 
             if next_ch == '\n':
-                print("hereeeeeeeee", self.line_num)
+                # print("hereeeeeeeee", self.line_num)
                 self.line_num += 1
 
             
 
             if next_state == Common.ERROR_DETECTED:
-                print("vaaaaaaaaa?")
+                # print("vaaaaaaaaa?")
                 if curr_state.id == 17:
                     self.has_error = True
                     found_token = self.reader.string_read
@@ -101,13 +101,13 @@ class Scanner:
             #    break
 
             #print("++++++++++ next state:", next_state.id)
-            print("hhhhhh", next_state, next_state.id)
+            # print("hhhhhh", next_state, next_state.id)
             if next_state.is_final:
-                print("khake alam")
+                # print("khake alam")
                 #print("here", next_state.id)
                 if next_state.has_star:
                     #print("decreasing", next_state.id)
-                    print("injaaaaaaaa?")
+                    # print("injaaaaaaaa?")
                     self.reader.decrease_pointer()
                     self.has_decreseaed = True
 
@@ -117,7 +117,7 @@ class Scanner:
                     if next_ch == '\n':
                         self.line_num -= 1
 
-                    print("oyyyyyyyyy", found_token, token_type)
+                    # print("oyyyyyyyyy", found_token, token_type)
 
                     if next_state.id == 4:
                         all_keys_ids.append(found_token)
@@ -196,7 +196,7 @@ class Scanner:
             curr_state = self.dfa.start_state
             next_token, next_token_type, next_ch, next_ch_type, all_tokens, all_errors, all_keys_ids = self.get_next_token(curr_state, next_ch, next_ch_type, all_tokens, all_errors, all_keys_ids)
             self.reader.reset_pointers(self.has_decreseaed)
-            print("^^^^^^^^^", all_tokens)
+            # print("^^^^^^^^^", all_tokens)
             #print("&&&&&&&&&&&", all_errors)
             #print("##########", all_keys_ids)
 

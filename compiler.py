@@ -1,4 +1,4 @@
-from scanner.scanner import Scanner
+from scanner import Scanner
 
 def run_compiler():
     scanner = Scanner()
