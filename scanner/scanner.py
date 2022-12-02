@@ -20,6 +20,10 @@ class Scanner:
 
             next_state = curr_state.get_next_state(next_ch_type)
 
+            if not next_state:
+                # error state
+                pass
+
             if next_state.is_final:
                 if next_state.has_star:
                     self.reader.decrease_pointer()
