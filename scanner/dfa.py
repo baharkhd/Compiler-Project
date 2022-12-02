@@ -8,7 +8,7 @@ class State:
         self.transitions = {}
 
         # if this is a final state, self.token is the token it represents, else it is None
-        self.token = None
+        self.token_type = None
 
     def add_transition(self, action, dest_s):
         self.transitions[action] = dest_s
