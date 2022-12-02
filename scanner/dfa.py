@@ -3,6 +3,7 @@ from statics import *
 
 class State:
     def __init__(self, id, is_final=False, has_star=False):
+        super(State)
         self.id = id
         self.is_final = is_final
         self.transitions = {}

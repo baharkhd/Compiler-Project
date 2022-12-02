@@ -9,12 +9,15 @@ class Scanner:
         self.dfa.define_dfa()
         self.reader = Reader()
         self.writer = Writer()
-
         self.line_num = 1
 
     def get_next_token(self, curr_state):
         while True:
             next_ch, next_ch_type = self.reader.get_next_char()
+            if next_ch_type == CharType.INVALID:
+                # here we should raise INVALID error
+                pass
+
             next_state = curr_state.get_next_state(next_ch_type)
 
             if next_state.is_final:
@@ -22,11 +25,13 @@ class Scanner:
                     self.reader.decrease_pointer()
                     found_token = self.reader.string_read
                     token_type = next_state.token_type
+                    break
                 else:
                     found_token = self.reader.string_read
                     token_type = next_state.token_type
+                    break
             else:
-                break
+                continue
 
         return found_token, token_type
 
