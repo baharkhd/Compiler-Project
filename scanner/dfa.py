@@ -33,8 +33,6 @@ class DFA:
         self.start_state = self.states[0]
 
     def define_dfa(self):
-        # subgraph for defining KEYWORD
-
         #state0
         self.start_state.add_transition(CharType.DIGIT, self.states[1])
         self.start_state.add_transition(CharType.LETTER, self.states[3])
@@ -79,6 +77,6 @@ class DFA:
 
 
 
-if __name__ == "__main__":
-    dfa = DFA(Common.N_OF_STATES)
-    dfa.define_dfa()
+#if __name__ == "__main__":
+#    dfa = DFA(Common.N_OF_STATES)
+#    dfa.define_dfa()

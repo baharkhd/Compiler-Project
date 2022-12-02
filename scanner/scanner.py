@@ -5,8 +5,8 @@ from dfa import DFA
 
 class Scanner:
     def __init__(self):
-        self.dfa = DFA()
-        self.dfa.define_dfa()
+        dfa = DFA(Common.N_OF_STATES)
+        dfa.define_dfa()
         self.reader = Reader()
         self.writer = Writer()
         self.line_num = 1
