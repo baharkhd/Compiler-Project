@@ -1,4 +1,4 @@
-from statics import *
+from .statics import *
 import re
 class Reader:
     def __init__(self):
@@ -24,6 +24,8 @@ class Reader:
             return CharType.LETTER
         elif re.match(CharType.WHITESPACE.value, char):
             return CharType.WHITESPACE
+        elif re.match(CharType.SINGLE_SYMBOL.value, char):
+            return CharType.SINGLE_SYMBOL
         elif char == '=':
             return CharType.EQUAL
         elif char == '*':
