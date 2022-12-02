@@ -1,7 +1,7 @@
 import enum
 
 #INPUT_FILE_PATH = 'inputs/input.txt'
-INPUT_FILE_PATH = 'inputs/test_input.txt'
+INPUT_FILE_PATH = 'input.txt'
 TOKENS_FILE_PATH = 'tokens.txt'
 ERRORS_FILE_PATH = 'lexical_errors.txt'
 SYMBOLS_FILE_PATH = 'symbol_table.txt'
@@ -60,6 +60,8 @@ class CharType(enum.Enum):
 class ErrorType(enum.Enum):
     INVALID_INPUT = 'Invalid input'
     INVALID_NUMBER = 'Invalid number'
+    UNMATCHED_COMMENT = 'Unmatched comment'
+    UNCLOSED_COMMENT = 'Unclosed comment'
 
 tokens = {
     TokenType.KEYWORD: ['if', 'else', 'void', 'int', 'while', 'break', 'switch', 'default', 'case', 'return', 'endif'],
