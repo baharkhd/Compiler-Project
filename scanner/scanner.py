@@ -1,15 +1,5 @@
-import enum
 from writer import *
 from reader import *
-
-class TokenType(enum.Enum):
-    KEYWORD = 'KEYWORD'
-    ID = 'ID'
-    NUM = 'NUM'
-    SYMBOL = 'SYMBOL'
-    COMMENT = 'COMMENT'
-    WHITESPACE = 'WHITESPACE'
-
 
 def validate_char(char):
     pass

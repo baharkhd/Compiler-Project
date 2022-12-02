@@ -1,7 +1,12 @@
+from statics import *
+
 class State:
     def __init__(self, id):
         self.id = id
         self.final = False
+
+        # if this is a final state, self.token is the token it represents, else it is None
+        self.token = None
 
 class DFA:
     def __init__(self):
