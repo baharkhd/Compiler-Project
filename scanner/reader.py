@@ -12,9 +12,12 @@ class Reader:
     def decrease_pointer(self):
         self.end_pointer -= 1
 
-    def reset_pointers(self):
+    def reset_pointers(self, has_decreased=False):
         self.start_pointer = self.end_pointer
-        self.string_read = ''
+        if has_decreased:
+            self.string_read = self.string_read[-1]
+        else:
+            self.string_read = ''
 
 
     def get_char_type(self, char):

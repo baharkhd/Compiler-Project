@@ -1,2 +1,4 @@
-void main(void)
-salam bahar khubi
+void main(void) {
+
+int a = 3d; 
+// def aa

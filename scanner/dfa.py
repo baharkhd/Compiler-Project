@@ -16,8 +16,10 @@ class State:
         self.transitions[action] = dest_s
 
     def get_next_state(self, action):
-        print("=====", self.id, action, self.transitions[action].id)
-        return self.transitions[action]
+        if action in self.transitions.keys():
+            return self.transitions[action]
+        else:
+            return Common.ERROR_DETECTED
 
 
 class DFA:
@@ -55,7 +57,7 @@ class DFA:
 
         #state1
         self.states[1].add_transition(CharType.DIGIT, self.states[1])
-        self.states[1].add_transition(CharType.LETTER, self.states[2])
+        #self.states[1].add_transition(CharType.LETTER, self.states[2])
         self.states[1].add_transition(CharType.WHITESPACE, self.states[2])
         self.states[1].add_transition(CharType.SINGLE_SYMBOL, self.states[2])
         self.states[1].add_transition(CharType.EQUAL, self.states[2])
