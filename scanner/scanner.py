@@ -205,9 +205,6 @@ class Scanner:
             #if next_ch_type == CharType.EOF:
             #    break
 
-            if self.line_num == 7:
-                break
-
         tokens_dict = self.handle_all_tokens(all_tokens)
         errors_dict = self.handle_all_errors(all_errors)
         all_keys_ids = list(set(all_keys_ids))

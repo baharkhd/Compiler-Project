@@ -1,3 +1,1 @@
-2.	(2m, Invalid number) (>, Invalid input) 
-3.	(23a, Invalid number) 
-6.	(=#, Invalid input) 
+2.	(*/, Unmatched comment) 
