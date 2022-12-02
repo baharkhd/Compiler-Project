@@ -1,8 +1,8 @@
-from scanner import *
+from scanner.scanner import Scanner
 
 
 def run_compiler():
-    run_scanner()
+    Scanner.run_scanner()
 
 
 if __name__ == "__main__":
