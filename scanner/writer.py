@@ -32,9 +32,9 @@ class Writer:
         with open(SYMBOLS_FILE_PATH, 'w') as f:
             for k in key_words:
                 f.writelines(f'{key_words.index(k) + 1}: {k}\n')
+            symbols_table = [s for s in symbols_table if s not in key_words]
             for token in symbols_table:
-                if token not in key_words:
-                    f.writelines(f'{symbols_table.index(token) + len(key_words) + 1}: {token}\n')
+                f.writelines(f'{symbols_table.index(token) + len(key_words) + 1}: {token}\n')
 
 
 if __name__ == "__main__":
@@ -47,4 +47,5 @@ if __name__ == "__main__":
     errors = {7: [('3d', 'Invalid number')], 9: [('cd!', 'Invalid input')]}
     writer = Writer()
     # writer.write_tokens(ttt)
-    writer.write_errors(errors)
+    writer.write_symbols(symbols)
+    # writer.write_errors(errors)
