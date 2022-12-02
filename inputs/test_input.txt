@@ -1,1 +1,4 @@
-void main(void)
+void main(void) {
+
+int a = 3d; 
+// def aa
