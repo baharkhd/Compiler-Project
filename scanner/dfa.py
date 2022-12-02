@@ -31,6 +31,16 @@ class DFA:
             else:
                 self.states.append(State(i))
         self.start_state = self.states[0]
+        self.states[2].token_type = TokenType.NUM
+        self.states[4].token_type = TokenType.KEYWORD_ID
+        self.states[5].token_type = TokenType.WHITESPACE
+        self.states[6].token_type = TokenType.SYMBOL
+        self.states[8].token_type = TokenType.SYMBOL
+        self.states[9].token_type = TokenType.SYMBOL
+        self.states[13].token_type = TokenType.COMMENT
+        self.states[15].token_type = TokenType.COMMENT
+        self.states[16].token_type = TokenType.SYMBOL
+        self.states[18].token_type = TokenType.SYMBOL
 
     def define_dfa(self):
         # subgraph for defining KEYWORD

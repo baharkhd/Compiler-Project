@@ -9,6 +9,7 @@ SYMBOLS_FILE_PATH = 'symbol_table.txt'
 class TokenType(enum.Enum):
     KEYWORD = 'KEYWORD'
     ID = 'ID'
+    KEYWORD_ID = 'KEYWORD ID'
     NUM = 'NUM'
     SYMBOL = 'SYMBOL'
     COMMENT = 'COMMENT'
