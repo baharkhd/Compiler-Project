@@ -1,5 +1,6 @@
 from statics import *
 
+
 class State:
     def __init__(self, id, is_final=False, has_star=False):
         self.id = id
@@ -15,19 +16,24 @@ class State:
     def give_next_state(self, action):
         return self.transitions[action]
 
-class DFA:
-    def __init__(self):
-        self.states = []
-        self.start_state = State(0)
 
-    
+class DFA:
+    def __init__(self, n):
+        self.states = []
+        for i in range(n):
+            if i in Common.FINAL_STATES:
+                self.states.append(State(i, is_final=True))
+            else:
+                self.states.append(State(i))
+        self.start_state = self.states[0]
 
     def define_dfa(self):
+        # subgraph for defining KEYWORD
+        self.start_state.add_transition(Transitions.DIGIT, self.states[1])
+        self.start_state.add_transition(Transitions.LETTER, self.states[3])
+        self.start_state.add_transition(Transitions.LETTER, self.states[3])
 
-        #subgraph for defining KEYWORD
-        self.start_state.add_transition(Transitions.DIGIT, ...)
-        
 
 if __name__ == "__main__":
-    dfa = DFA()
+    dfa = DFA(Common.N_OF_STATES)
     dfa.define_dfa()

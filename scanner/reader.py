@@ -1,5 +1,10 @@
 from statics import *
+<<<<<<< HEAD
 import re
+=======
+
+
+>>>>>>> c61fb466885346dd580e7abf72b8ba90dd6571ea
 class Reader:
     def __init__(self):
         self.input_file = open(INPUT_FILE_PATH)

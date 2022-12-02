@@ -2,6 +2,7 @@ from writer import *
 from reader import *
 from dfa import DFA
 
+
 class Scanner:
     def __init__(self):
         self.dfa = DFA()
@@ -19,8 +20,6 @@ class Scanner:
 
         next_char = file.read(1)
         self.validate_char(next_char)
-
-
 
     def run_scanner(self):
         first_ch = reader.get_next_char()

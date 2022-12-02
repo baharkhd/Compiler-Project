@@ -5,6 +5,7 @@ TOKENS_FILE_PATH = 'tokens.txt'
 ERRORS_FILE_PATH = 'lexical_errors.txt'
 SYMBOLS_FILE_PATH = 'symbol_table.txt'
 
+
 class TokenType(enum.Enum):
     KEYWORD = 'KEYWORD'
     ID = 'ID'
@@ -13,8 +14,13 @@ class TokenType(enum.Enum):
     COMMENT = 'COMMENT'
     WHITESPACE = 'WHITESPACE'
 
+
 class Common(enum.Enum):
     EOF = 'EOF'
+    N_OF_STATES = 19
+    FINAL_STATES = [2, 4, 5, 6, 8, 9, 13, 15, 16, 18]
+
+
 class Transitions(enum.Enum):
     DIGIT = '0-9'
     NOT_DIGIT = '~(0-9)'
