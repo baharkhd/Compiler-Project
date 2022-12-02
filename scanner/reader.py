@@ -1,5 +1,6 @@
 from statics import *
 
+
 class Reader:
     def __init__(self):
         self.input_file = open(INPUT_FILE_PATH)
