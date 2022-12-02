@@ -1,8 +1,7 @@
-from scanner import get_next_token
-
+from scanner import *
 
 def run_compiler():
-    pass
+    run_scanner()
 
 if __name__ == "__main__":
     run_compiler()
