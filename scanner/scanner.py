@@ -22,7 +22,7 @@ class Scanner:
             #print("********* curr state *********", curr_state.id)
             if not self.has_decreseaed:
                 next_ch, next_ch_type = self.reader.get_next_char()
-            print("-----", self.line_num, next_ch, next_ch_type, next_ch == '\n', next_ch == " ")
+            print("-----", self.line_num, curr_state.id, next_ch, next_ch_type, next_ch == '\n', next_ch == " ")
             self.has_decreseaed = False
 
             if curr_state.id == 11:
@@ -34,15 +34,14 @@ class Scanner:
                 next_ch_type = CharType.EOF
                 break
 
-            if next_ch == '\n':
-                print("hereeeeeeeee", self.line_num)
-                self.line_num += 1
+            
 
             #if next_ch_type == '':
             #    # it is the end of file
             #    self.end_of_file = True
             
             if next_ch_type == CharType.INVALID:
+                print("aloooooooooo")
                 # here we should raise INVALID error
                 self.has_error = True
 
@@ -51,7 +50,12 @@ class Scanner:
                 token_type = ErrorType.INVALID_INPUT
                 break
 
+            
             next_state = curr_state.get_next_state(next_ch_type, next_ch)
+
+            #print("$$$")
+            #print(curr_state.id, next_ch, next_state)
+            #print("$$$")
 
             
 
@@ -61,9 +65,14 @@ class Scanner:
             #    token_type = ErrorType.UNMATCHED_COMMENT
             #    break
 
+            if next_ch == '\n':
+                print("hereeeeeeeee", self.line_num)
+                self.line_num += 1
+
             
 
             if next_state == Common.ERROR_DETECTED:
+                print("vaaaaaaaaa?")
                 if curr_state.id == 17:
                     self.has_error = True
                     found_token = self.reader.string_read
@@ -92,27 +101,37 @@ class Scanner:
             #    break
 
             #print("++++++++++ next state:", next_state.id)
+            print("hhhhhh", next_state, next_state.id)
             if next_state.is_final:
+                print("khake alam")
                 #print("here", next_state.id)
                 if next_state.has_star:
                     #print("decreasing", next_state.id)
+                    print("injaaaaaaaa?")
                     self.reader.decrease_pointer()
                     self.has_decreseaed = True
 
                     found_token = self.reader.string_read[:-1]
                     token_type = next_state.token_type
 
+                    if next_ch == '\n':
+                        self.line_num -= 1
+
+                    print("oyyyyyyyyy", found_token, token_type)
+
                     if next_state.id == 4:
                         all_keys_ids.append(found_token)
-
                     break
                 else:
                     #print("22222", next_state.id)
                     found_token = self.reader.string_read
                     token_type = next_state.token_type
+
                     break
             else:
                 curr_state = next_state
+
+            
 
             
 
@@ -185,6 +204,9 @@ class Scanner:
                 break
             #if next_ch_type == CharType.EOF:
             #    break
+
+            if self.line_num == 7:
+                break
 
         tokens_dict = self.handle_all_tokens(all_tokens)
         errors_dict = self.handle_all_errors(all_errors)

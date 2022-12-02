@@ -1,0 +1,98 @@
+from .writer import *
+from .reader import *
+from .dfa import *
+
+
+class Scanner:
+    def __init__(self):
+        self.dfa = DFA(Common.N_OF_STATES.value)
+        self.dfa.define_dfa()
+        self.curr_state = self.dfa.start_state
+        self.reader = Reader()
+        self.writer = Writer()
+        self.line_num = 1
+        self.end_of_file = False
+        self.has_decreseaed = False
+        self.has_error = False
+        self.comment_opened = False   
+        self.first_time = True
+
+    def handle_all_tokens(self, all_tokens):
+        tokens_dict = {}
+
+        for token in all_tokens:
+            if token[0] in tokens_dict.keys():
+                tokens_dict[token[0]].append((token[1], token[2]))
+            else:
+                tokens_dict[token[0]] = [(token[1], token[2])]
+
+        return tokens_dict
+
+    def handle_all_errors(self, all_errors):
+        errors_dict = {}
+
+        for error in all_errors:
+            if error[0] in errors_dict.keys():
+                errors_dict[error[0]].append((error[1], error[2]))
+            else:
+                errors_dict[error[0]] = [(error[1], error[2])]
+
+        return errors_dict
+
+    def get_next_token(self, char, char_type):
+        while True:
+            print("+++", self.curr_state.id)
+
+            if not self.first_time and not self.has_decreseaed:
+                char, char_type = self.reader.get_next_char()
+
+            self.first_time = False
+            
+            action = self.reader.get_char_type(char)
+            print("?????", action, char)
+            next_state = self.curr_state.get_next_state(action)
+            print("----------", char, action, next_state.id)
+            self.curr_state = next_state
+
+            if self.curr_state.is_final:
+                if self.curr_state.has_star:
+                    self.has_decreseaed = True
+                    found_token = self.reader.string_read[:-1]
+                    token_type = self.curr_state.token_type
+                    break
+                else:
+                    found_token = self.reader.string_read
+                    token_type = self.curr_state.token_type
+                    break
+
+        return found_token, token_type, char, char_type
+                
+
+
+    def run_scanner(self):
+        first_ch, first_ch_type = self.reader.get_next_char()
+        self.reader.start_pointer = 0
+        char, char_type = first_ch, first_ch_type
+
+        all_tokens = []
+        all_errors = []
+        all_keys_ids = []
+
+        while True:
+            new_token, new_token_type, char, char_type = self.get_next_token(char, char_type)
+            print("****", new_token, new_token_type)
+            self.reader.reset_pointers()
+            self.curr_state = self.dfa.start_state
+
+            
+
+        #tokens_dict = self.handle_all_tokens(all_tokens)
+        #errors_dict = self.handle_all_errors(all_errors)
+        #all_keys_ids = list(set(all_keys_ids))
+
+        #self.writer.write_tokens(tokens_dict)
+        #self.writer.write_errors(errors_dict)
+        #self.writer.write_symbols(all_keys_ids)
+
+        
+
