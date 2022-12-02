@@ -57,6 +57,10 @@ class CharType(enum.Enum):
     INVALID = 'INVALID'
 
 
+class ErrorType(enum.Enum):
+    INVALID_INPUT = 'Invalid input'
+    INVALID_NUMBER = 'Invalid number'
+
 tokens = {
     TokenType.KEYWORD: ['if', 'else', 'void', 'int', 'while', 'break', 'switch', 'default', 'case', 'return', 'endif'],
     TokenType.SYMBOL: [';', ':', ',', '[', ']', '(', ')', '{', '}', '+', '-', '*', '=', '<', '==', '/'],

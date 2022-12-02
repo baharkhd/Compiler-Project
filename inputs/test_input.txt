@@ -1,6 +1,6 @@
 void main(void) {
 
-int a = 3d; 
+int a! = 3d; 
 // def aa
 
 if ( d  <  1 ) {
