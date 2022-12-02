@@ -7,7 +7,14 @@ class Reader:
         self.start_pointer = 0
         self.end_pointer = 0
 
-        self.read_string = ''
+        self.string_read = ''
+
+    def decrease_pointer(self):
+        self.end_pointer -= 1
+
+    def reset_pointers(self):
+        self.start_pointer = self.end_pointer
+        self.string_read = ''
 
 
     def get_char_type(self, char):
@@ -31,7 +38,7 @@ class Reader:
     def get_next_char(self):
         ch = self.input_file.read(1)
         self.end_pointer += 1
-        self.read_string += ch
+        self.string_read += ch
         return ch, self.get_char_type(ch)
 
     def read_input_file(self):
@@ -40,9 +47,9 @@ class Reader:
                 next_char = file.read(1)
                 if not next_char:
                     break
-                self.read_string += next_char
+                self.string_read += next_char
 
-            print(self.read_string)
+            print(self.string_read)
 
 
 #if __name__ == "__main__":

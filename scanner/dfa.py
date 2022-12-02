@@ -3,13 +3,14 @@ from statics import *
 
 class State:
     def __init__(self, id, is_final=False, has_star=False):
+        super(State)
         self.id = id
         self.is_final = is_final
         self.has_star = has_star
         self.transitions = {}
 
         # if this is a final state, self.token is the token it represents, else it is None
-        self.token = None
+        self.token_type = None
 
     def add_transition(self, action, dest_s):
         self.transitions[action] = dest_s
