@@ -1,4 +1,4 @@
-from .statics import *
+from statics import *
 import re
 class Reader:
     def __init__(self):

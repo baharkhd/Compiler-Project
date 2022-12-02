@@ -1,6 +1,6 @@
-from .writer import *
-from .reader import *
-from .dfa import *
+from writer import *
+from reader import *
+from dfa import *
 
 
 class Scanner:

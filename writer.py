@@ -1,4 +1,4 @@
-from .statics import *
+from statics import *
 
 
 class Writer:
@@ -37,15 +37,3 @@ class Writer:
             symbols_table = [s for s in symbols_table if s not in key_words]
             for token in symbols_table:
                 f.writelines(f'{symbols_table.index(token) + len(key_words) + 1}.\t{token}\n')
-
-
-if __name__ == "__main__":
-    ttt = {}
-
-    symbols = ['a', 'b', 'cde', 'if']
-
-    errors = {7: [('3d', 'Invalid number')], 9: [('cd!', 'Invalid input')]}
-    writer = Writer()
-    writer.write_tokens(ttt)
-    writer.write_symbols(symbols)
-    writer.write_errors(errors)
