@@ -4,7 +4,7 @@ from statics import *
 class State:
     def __init__(self, id, is_final=False, has_star=False):
         self.id = id
-        self.final = is_final
+        self.is_final = is_final
         self.transitions = {}
 
         # if this is a final state, self.token is the token it represents, else it is None
@@ -13,7 +13,7 @@ class State:
     def add_transition(self, action, dest_s):
         self.transitions[action] = dest_s
 
-    def give_next_state(self, action):
+    def get_next_state(self, action):
         return self.transitions[action]
 
 

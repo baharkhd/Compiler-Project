@@ -15,8 +15,17 @@ class Reader:
             return CharType.DIGIT
         elif re.match(CharType.LETTER.value, char):
             return CharType.LETTER
+        elif re.match(CharType.WHITESPACE.value, char):
+            return CharType.WHITESPACE
         elif char == '=':
-            return  
+            return CharType.EQUAL
+        elif char == '*':
+            return CharType.STAR
+        elif char == '/':
+            return CharType.SLASH
+        else:
+            return CharType.INVALID
+        
         
 
     def get_next_char(self):
@@ -36,6 +45,6 @@ class Reader:
             print(self.read_string)
 
 
-if __name__ == "__main__":
-    reader = Reader()
-    reader.read_input_file()
+#if __name__ == "__main__":
+#    reader = Reader()
+#    reader.read_input_file()

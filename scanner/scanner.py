@@ -16,14 +16,17 @@ class Scanner:
         pass
 
     def get_next_token(self, file, line_num):
-        detemined_tok = ''
-
-        next_char = file.read(1)
-        self.validate_char(next_char)
+        pass
 
     def run_scanner(self):
-        first_ch = reader.get_next_char()
-        reader.start_pointer = 0
+        first_ch, first_ch_type = self.reader.get_next_char()
+        self.reader.start_pointer = 0
+
+        curr_state = self.dfa.start_state
 
         while True:
-            next_ch = reader.get_next_char()
+            next_ch, next_ch_type = self.reader.get_next_char()
+            next_state = curr_state.get_next_state(next_ch_type)
+
+            if next_state.is_final:
+                pass

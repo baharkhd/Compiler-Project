@@ -37,6 +37,10 @@ class CharType(enum.Enum):
     SYMBOL_NEQUAL_NSTAR = 'SYMBOL_NEQUAL_NSTAR'
     WHITESPACE = '\s|\n|\t|\f|\r|\v'
     EOF = 'EOF'
+    EQUAL = '='
+    STAR = '*'
+    SLASH = '/'
+    INVALID = 'INVALID'
 
 tokens = {
     TokenType.KEYWORD: ['if', 'else', 'void', 'int', 'while', 'break', 'switch', 'default', 'case', 'return', 'endif'],
