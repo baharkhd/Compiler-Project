@@ -1,0 +1,1 @@
+3: [('a!', 'Invalid input'), ('3d', 'Invalid number')]
