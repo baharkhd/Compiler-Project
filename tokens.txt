@@ -1,0 +1,5 @@
+1: [('KEYWORD ID', 'void'), ('KEYWORD ID', 'main'), ('SYMBOL', '('), ('KEYWORD ID', 'void'), ('SYMBOL', ')'), ('SYMBOL', '{')]
+3: [('KEYWORD ID', 'int'), ('Invalid input', 'a!'), ('SYMBOL', '='), ('SYMBOL', ';')]
+6: [('KEYWORD ID', 'if'), ('SYMBOL', '('), ('KEYWORD ID', 'd'), ('SYMBOL', '<'), ('SYMBOL', ')'), ('SYMBOL', '{')]
+7: [('KEYWORD ID', 'return'), ('SYMBOL', ';')]
+8: [('SYMBOL', '}')]

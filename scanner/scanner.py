@@ -107,25 +107,27 @@ class Scanner:
         return found_token, token_type, next_ch, next_ch_type, all_tokens, all_errors, all_keys_ids
 
 
-    def handle_all_tokens(all_tokens):
+    def handle_all_tokens(self, all_tokens):
         tokens_dict = {}
 
         for token in all_tokens:
-            if tokens_dict[token[0]]:
+            if token[0] in tokens_dict.keys():
                 tokens_dict[token[0]].append((token[1], token[2]))
             else:
                 tokens_dict[token[0]] = [(token[1], token[2])]
 
         return tokens_dict
 
-    def handle_all_errors(all_errors):
+    def handle_all_errors(self, all_errors):
         errors_dict = {}
 
         for error in all_errors:
-            if errors_dict[error[0]]:
+            if error[0] in errors_dict.keys():
                 errors_dict[error[0]].append((error[1], error[2]))
             else:
                 errors_dict[error[0]] = [(error[1], error[2])]
+
+        return errors_dict
 
     def run_scanner(self):
         first_ch, first_ch_type = self.reader.get_next_char()
@@ -153,9 +155,9 @@ class Scanner:
         errors_dict = self.handle_all_errors(all_errors)
         all_keys_ids = list(set(all_keys_ids))
 
-        writer.write_tokens(tokens_dict)
-        writer.write_errors(errors_dict)
-        writer.write_symbols(all_keys_ids)
+        self.writer.write_tokens(tokens_dict)
+        self.writer.write_errors(errors_dict)
+        self.writer.write_symbols(all_keys_ids)
 
         
 
