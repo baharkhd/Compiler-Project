@@ -9,5 +9,12 @@
 9.	case
 10.	return
 11.	endif
-12.	main
-13.	alam
+12.	killed
+13.	c
+14.	me
+15.	arr
+16.	g
+17.	main
+18.	b
+19.	a
+20.	Int

@@ -19,6 +19,7 @@ class Scanner:
         self.has_error = False
         self.comment_opened = False
         self.one_line_comment = False
+        self.invalid_char = False
 
         self.start = True
 
@@ -46,28 +47,50 @@ class Scanner:
             char_type = self.reader.get_char_type(curr_char)
 
             if char_type == CharType.INVALID:
-                token = self.text[self.reader.start_pointer:self.reader.end_pointer + 1]
-                token_type = ErrorType.INVALID_INPUT
-                token_line_n = self.line_num
-                self.reader.start_pointer = self.reader.end_pointer
-                self.reader.increase_end_pointer()
-                self.reader.start_pointer += 1
+                self.invalid_char = False
+                print("(()()()()()()()()", curr_char, self.curr_state.id)
+                
+                if self.curr_state.id == 14 or self.curr_state.id == 11 or self.curr_state.id == 12:
+                    print("vaaaaaa?", self.invalid_char)
+                    self.reader.increase_end_pointer()
+                    continue
+                else:
+                    print("allaho akbar")
+                    self.invalid_char = True
+                    token = self.text[self.reader.start_pointer:self.reader.end_pointer + 1]
+                    token_type = ErrorType.INVALID_INPUT
+                    token_line_n = self.line_num
+                    self.reader.start_pointer = self.reader.end_pointer
+                    self.reader.increase_end_pointer()
+                    self.reader.start_pointer += 1
 
-                errors.append((self.line_num, token, token_type.value))
-                self.has_error = True
-                break
+                    errors.append((self.line_num, token, token_type.value))
+                    self.has_error = True
+                    break
+                
 
             next_state = self.curr_state.get_next_state(char_type)
             self.reader.increase_end_pointer()
+
+            if (self.curr_state == 11 or self.curr_state == 12) and next_state.id != 13:
+                self.reader.increase_end_pointer()
+                continue
             print("!!!!!!", curr_char, self.curr_state.id, curr_char == '\n')
 
             if curr_char == '\n':
-                #print("^^^^^^^^^^^^^^^^^")
                 self.line_num += 1
 
             if next_state == Common.ERROR_DETECTED:
-                #print("????")
-                if self.curr_state == 14 or self.curr_state == 11 or self.curr_state == 12:
+                if self.curr_state.id == 17:
+                    self.curr_state = self.dfa.start_state
+
+                    # Here we handle Unmatched comment
+                    token = self.text[self.reader.start_pointer:self.reader.end_pointer]
+                    token_type = ErrorType.UNMATCHED_COMMENT
+
+                    errors.append((self.line_num, token, token_type.value))
+                    
+                elif self.curr_state.id == 14 or self.curr_state.id == 11 or self.curr_state.id == 12:
                     pass
                 else:
                     self.curr_state = self.dfa.start_state
@@ -77,6 +100,7 @@ class Scanner:
                     token_type = ErrorType.INVALID_NUMBER
 
                     errors.append((self.line_num, token, token_type.value))
+                    self.reader.start_pointer = self.reader.end_pointer
 
             else:
                 
@@ -85,11 +109,15 @@ class Scanner:
                     #print("2.-----")
                     if next_state.has_star:
                         #print("3.-----")
+                        if curr_char == '\n':
+                            self.line_num -= 1
+
                         token = self.text[self.reader.start_pointer:self.reader.end_pointer - 1]
                         token_type = next_state.token_type
                         token_line_n = self.line_num
                         self.reader.start_pointer = self.reader.end_pointer - 1
                         self.reader.decrease_end_pointer()
+
 
                         if next_state.id == 4:
                             key_ids.append(token)
@@ -101,8 +129,6 @@ class Scanner:
                         token_line_n = self.line_num
                         self.reader.start_pointer = self.reader.end_pointer
                         break
-                #else:
-                    #if next_state.id == 14:
 
                 self.curr_state = next_state
 
@@ -110,7 +136,21 @@ class Scanner:
             self.has_error = False
             return None, errors, key_ids
         else:
+            print("++__++", self.curr_state.id, not token_type)
+            if not token_type:
+                print("????+++", self.invalid_char)
+                if self.invalid_char:
+                    self.invalid_char = False
+                    return None, errors, key_ids
+                self.invalid_char = False
+                print("+_+_+_+_+_+", self.curr_state.id)
+                errors.append((self.line_num, self.text[self.reader.start_pointer:self.reader.end_pointer][:7] + '...', ErrorType.UNCLOSED_COMMENT.value))
+                return None, errors, key_ids
+
             return (token_line_n, token_type.value, token), errors, key_ids
+
+            #print("---------+++---------", curr_char, self.curr_state.id, self.text[self.reader.start_pointer:self.reader.end_pointer])
+            
 
 
 
