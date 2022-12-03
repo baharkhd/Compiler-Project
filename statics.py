@@ -2,11 +2,8 @@ import enum
 
 #INPUT_FILE_PATH = 'inputs/input.txt'
 INPUT_FILE_PATH = 'input.txt'
-# TOKENS_FILE_PATH = 'scanner/tokens.txt'
 TOKENS_FILE_PATH = 'tokens.txt'
-# ERRORS_FILE_PATH = 'scanner/lexical_errors.txt'
 ERRORS_FILE_PATH = 'lexical_errors.txt'
-# SYMBOLS_FILE_PATH = 'scanner/symbol_table.txt'
 SYMBOLS_FILE_PATH = 'symbol_table.txt'
 
 
@@ -46,7 +43,7 @@ class CharType(enum.Enum):
     NOT_DIGIT_LETTER = '[^a-zA-Z0-9]'
     SYMBOL_NEQUAL_NSTAR = 'SYMBOL_NEQUAL_NSTAR'
     SINGLE_SYMBOL = ';|:|,|\[|\]|\(|\)|{|}|\+|-|<'
-    WHITESPACE = '\s|\n|\t|\f|\r|\v'
+    WHITESPACE = '\s|\t|\f|\r|\v'
     WHITESPACE_EX_ENTER = '\s|\t|\f|\r|\v'
     EOF = 'EOF'
     EOF_ENTER = 'EOF|\n'

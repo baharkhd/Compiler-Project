@@ -15,15 +15,8 @@ class State:
     def add_transition(self, action, dest_s):
         self.transitions[action] = dest_s
 
-    def get_next_state(self, action, char=None):
-        if self.id == 14 and action == CharType.WHITESPACE and char != '\n':
-            action = CharType.WHITESPACE_EX_ENTER
-        
-        # Todo: probably encounter error for EOF too
-        if self.id == 14 and char == '\n':
-            action = CharType.ENTER
-            
-        #print("--------", self.id, action, self.transitions.keys())
+    def get_next_state(self, action):
+        #print(self.id, action)
         if action in self.transitions.keys():
             return self.transitions[action]
         else:
@@ -42,6 +35,8 @@ class DFA:
             else:
                 self.states.append(State(i))
         self.start_state = self.states[0]
+
+        # Todo: Check if separating ENTER and WHITESPACE makes any problems
         self.states[2].token_type = TokenType.NUM
         self.states[4].token_type = TokenType.KEYWORD_ID
         self.states[5].token_type = TokenType.WHITESPACE
@@ -58,6 +53,7 @@ class DFA:
         self.start_state.add_transition(CharType.DIGIT, self.states[1])
         self.start_state.add_transition(CharType.LETTER, self.states[3])
         self.start_state.add_transition(CharType.WHITESPACE, self.states[5])
+        self.start_state.add_transition(CharType.ENTER, self.states[5])
         self.start_state.add_transition(CharType.SINGLE_SYMBOL, self.states[6])
         self.start_state.add_transition(CharType.EQUAL, self.states[7])
         self.start_state.add_transition(CharType.SLASH, self.states[10])
@@ -67,6 +63,7 @@ class DFA:
         self.states[1].add_transition(CharType.DIGIT, self.states[1])
         #self.states[1].add_transition(CharType.LETTER, self.states[2])
         self.states[1].add_transition(CharType.WHITESPACE, self.states[2])
+        self.states[1].add_transition(CharType.ENTER, self.states[2])
         self.states[1].add_transition(CharType.SINGLE_SYMBOL, self.states[2])
         self.states[1].add_transition(CharType.EQUAL, self.states[2])
         self.states[1].add_transition(CharType.SLASH, self.states[2])
@@ -78,6 +75,7 @@ class DFA:
         self.states[3].add_transition(CharType.LETTER, self.states[3])
         self.states[3].add_transition(CharType.DIGIT, self.states[3])
         self.states[3].add_transition(CharType.WHITESPACE, self.states[4])
+        self.states[3].add_transition(CharType.ENTER, self.states[4])
         self.states[3].add_transition(CharType.SINGLE_SYMBOL, self.states[4])
         self.states[3].add_transition(CharType.EQUAL, self.states[4])
         self.states[3].add_transition(CharType.SLASH, self.states[4])
@@ -90,6 +88,7 @@ class DFA:
         self.states[7].add_transition(CharType.LETTER, self.states[9])
         self.states[7].add_transition(CharType.DIGIT, self.states[9])
         self.states[7].add_transition(CharType.WHITESPACE, self.states[9])
+        self.states[7].add_transition(CharType.ENTER, self.states[9])
         self.states[7].add_transition(CharType.SINGLE_SYMBOL, self.states[9])
         self.states[7].add_transition(CharType.SLASH, self.states[9])
         self.states[7].add_transition(CharType.STAR, self.states[9])
@@ -103,6 +102,7 @@ class DFA:
         self.states[10].add_transition(CharType.LETTER, self.states[16])
         self.states[10].add_transition(CharType.DIGIT, self.states[16])
         self.states[10].add_transition(CharType.WHITESPACE, self.states[16])
+        self.states[10].add_transition(CharType.ENTER, self.states[16])
         self.states[10].add_transition(CharType.SINGLE_SYMBOL, self.states[16])
         # self.states[10].add_transition(CharType.EOF, self.states[16])
         # self.states[10].add_transition(CharType.NSTAR_NSLASH, self.states[16])
@@ -113,6 +113,7 @@ class DFA:
         self.states[11].add_transition(CharType.LETTER, self.states[11])
         self.states[11].add_transition(CharType.DIGIT, self.states[11])
         self.states[11].add_transition(CharType.WHITESPACE, self.states[11])
+        self.states[11].add_transition(CharType.ENTER, self.states[11])
         self.states[11].add_transition(CharType.SINGLE_SYMBOL, self.states[11])
         self.states[11].add_transition(CharType.SLASH, self.states[11])
         # self.states[11].add_transition(CharType.EOF, self.states[11])
@@ -123,6 +124,7 @@ class DFA:
         self.states[12].add_transition(CharType.EQUAL, self.states[11])
         self.states[12].add_transition(CharType.LETTER, self.states[11])
         self.states[12].add_transition(CharType.DIGIT, self.states[11])
+        self.states[12].add_transition(CharType.ENTER, self.states[11])
         self.states[12].add_transition(CharType.WHITESPACE, self.states[11])
         self.states[12].add_transition(CharType.SINGLE_SYMBOL, self.states[11])
         # self.states[12].add_transition(CharType.EOF, self.states[11])
@@ -135,7 +137,7 @@ class DFA:
 
         self.states[14].add_transition(CharType.LETTER, self.states[14])
         self.states[14].add_transition(CharType.DIGIT, self.states[14])
-        self.states[14].add_transition(CharType.WHITESPACE_EX_ENTER, self.states[14])
+        self.states[14].add_transition(CharType.WHITESPACE, self.states[14])
         self.states[14].add_transition(CharType.SINGLE_SYMBOL, self.states[14])
         self.states[14].add_transition(CharType.STAR, self.states[14])
         self.states[14].add_transition(CharType.SLASH, self.states[14])
@@ -147,6 +149,7 @@ class DFA:
         self.states[17].add_transition(CharType.EQUAL, self.states[18])
         self.states[17].add_transition(CharType.LETTER, self.states[18])
         self.states[17].add_transition(CharType.DIGIT, self.states[18])
+        self.states[17].add_transition(CharType.ENTER, self.states[18])
         self.states[17].add_transition(CharType.WHITESPACE, self.states[18])
         self.states[17].add_transition(CharType.SINGLE_SYMBOL, self.states[18])
         # self.states[12].add_transition(CharType.EOF, self.states[11])

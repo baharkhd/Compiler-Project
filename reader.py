@@ -12,6 +12,12 @@ class Reader:
     def decrease_pointer(self):
         self.end_pointer -= 1
 
+    def increase_end_pointer(self):
+        self.end_pointer += 1
+
+    def decrease_end_pointer(self):
+        self.end_pointer -= 1
+
     def reset_pointers(self, has_decreased=False):
         self.start_pointer = self.end_pointer
         if has_decreased:
@@ -25,6 +31,8 @@ class Reader:
             return CharType.DIGIT
         elif re.match(CharType.LETTER.value, char):
             return CharType.LETTER
+        elif char == '\n':
+            return CharType.ENTER
         elif re.match(CharType.WHITESPACE.value, char):
             return CharType.WHITESPACE
         elif re.match(CharType.SINGLE_SYMBOL.value, char):
@@ -45,6 +53,10 @@ class Reader:
         self.string_read += ch
         return ch, self.get_char_type(ch)
 
+    def read_input_code(self):
+        f = open(INPUT_FILE_PATH, "r")
+        return f.read()
+
     def read_input_file(self):
         with open(INPUT_FILE_PATH) as file:
             while True:
@@ -53,9 +65,9 @@ class Reader:
                     break
                 self.string_read += next_char
 
-            #print(self.string_read)
+            # print(self.string_read)
 
 
-#if __name__ == "__main__":
-#    reader = Reader()
-#    reader.read_input_file()
+if __name__ == "__main__":
+    reader = Reader()
+    reader.read_input_code()
