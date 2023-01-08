@@ -40,12 +40,12 @@ class Writer:
 
 
 # if __name__ == "__main__":
-#     ttt = {}
-#
-#     symbols = ['a', 'b', 'cde', 'if']
-#
-#     errors = {7: [('3d', 'Invalid number')], 9: [('cd!', 'Invalid input')]}
-#     writer = Writer()
-#     writer.write_tokens(ttt)
-#     writer.write_symbols(symbols)
-#     writer.write_errors(errors)
+    # ttt = {}
+
+    # symbols = ['a', 'b', 'cde', 'if']
+
+    # errors = {7: [('3d', 'Invalid number')], 9: [('cd!', 'Invalid input')]}
+    # writer = Writer()
+    # writer.write_tokens(ttt)
+    # writer.write_symbols(symbols)
+    # writer.write_errors(errors)

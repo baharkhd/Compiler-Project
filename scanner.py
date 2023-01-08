@@ -21,7 +21,7 @@ class Scanner:
         self.one_line_comment = False
         self.invalid_char = False
         self.unclosed_comment = False
-        self.start_comment_line = 0
+        self.start_comment_line = 1
 
         self.start = True
 
@@ -104,7 +104,7 @@ class Scanner:
             self.reader.increase_end_pointer()
 
             if isinstance(next_state, State):
-                if self.curr_state.id != 11 and next_state.id == 11:
+                if self.curr_state.id == 10 and next_state.id == 11:
                     self.start_comment_line = self.line_num
 
             if (self.curr_state.id == 11 or self.curr_state.id == 12) and next_state.id != 13:
