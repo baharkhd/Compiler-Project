@@ -17,7 +17,11 @@ class State:
 
     def get_next_state(self, action):
         #print(self.id, action)
+        #if self.id == 12:
+        #    print("-------------")
         if action in self.transitions.keys():
+            #if self.transitions[action].id == 13:
+            #    print("+++++++")
             return self.transitions[action]
         else:
             return Common.ERROR_DETECTED
