@@ -9,9 +9,6 @@
 9.	case
 10.	return
 11.	endif
-12.	q
-13.	m
-14.	p
-15.	f
-16.	n
-17.	main
+12.	a
+13.	b
+14.	main

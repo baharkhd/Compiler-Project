@@ -66,6 +66,9 @@ class Parser:
             elif token_type == TokenType.KEYWORD_ID.value:
                 token = TokenType.ID.value
                 token_type = TokenType.ID.value
+            elif token_type == TokenType.NUM.value:
+                token = TokenType.NUM.value
+                token_type = TokenType.NUM.value
 
             latest_state = self.stack[-1]
                 
@@ -89,13 +92,23 @@ class Parser:
                 grammar_id = self.parse_table[latest_state][token].split('_')[1] # since it is goto_#
                 next_gram = self.grammar[grammar_id]
                 parent_token = next_gram[0]
+                popped_tokens = []
 
-                right_tokens_num = len(next_gram) - 2
+                is_epsilon = next_gram[2] == 'epsilon'
+
+                if not is_epsilon:
+                    right_tokens_num = len(next_gram) - 2
+                else:
+                    # Todo: add epsilon as child of parent
+                    right_tokens_num = 0
+
+                    print("Children:", right_tokens_num)
+                    print('epsilon')
 
                 print("Parent:", parent_token)
-                print("Children:")
+                print("Children:", right_tokens_num)
 
-                popped_tokens = []
+                
                 for i in range(2 * right_tokens_num):
                     popped = self.stack.pop()
                     if i % 2 != 0:

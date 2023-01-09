@@ -1,3 +1,1 @@
-2.	(34m, Invalid number) 
-15.	(5d, Invalid number) 
-18.	(/*unclo..., Unclosed comment) 
+There is no lexical error.

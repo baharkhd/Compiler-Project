@@ -1,4 +1,4 @@
-from scanner import Scanner
+from scanner_module import Scanner
 from parser_module import Parser
 import json 
 # TODO: correct the imports in this file if wrong
@@ -24,8 +24,19 @@ def run_compiler():
     for k, v in parser.parse_table.items():
         print(k, ":", v)
 
-    print("======================================================")
+    print("1.======================================================")
 
+    for k, v in parser.grammar.items():
+        print(k, ":", v)
+
+    print("2.======================================================")   
+
+    #for tok in all_tokens:
+    #    print(tok)
+
+    #print("3.======================================================") 
+
+    all_tokens.append((0, 'SYMBOL', '$'))
     parser.create_parse_tree(all_tokens)
 
 
