@@ -15,7 +15,7 @@ def read_json(path='table.json'):
 def run_compiler():
     scanner = Scanner()
     all_tokens = scanner.run_scanner()
-    all_tokens.append((0, 'SYMBOL', '$'))
+    
     #for t in all_tokens:
     #    print(t)
 

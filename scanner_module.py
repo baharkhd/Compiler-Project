@@ -240,15 +240,15 @@ class Scanner:
             if self.check_EOF():
                 break
 
-
+        all_tokens.append((0, 'SYMBOL', '$'))
         
-        tokens_dict = self.handle_all_tokens(all_tokens)
-        errors_dict = self.handle_all_errors(all_errors)
-        all_keys_ids = list(set(all_keys_ids))
+        #tokens_dict = self.handle_all_tokens(all_tokens)
+        #errors_dict = self.handle_all_errors(all_errors)
+        #all_keys_ids = list(set(all_keys_ids))
 
-        self.writer.write_tokens(tokens_dict)
-        self.writer.write_errors(errors_dict)
-        self.writer.write_symbols(all_keys_ids)
+        #self.writer.write_tokens(tokens_dict)
+        #self.writer.write_errors(errors_dict)
+        #self.writer.write_symbols(all_keys_ids)
 
         return all_tokens
 
