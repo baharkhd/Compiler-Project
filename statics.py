@@ -11,6 +11,10 @@ SYMBOLS_FILE_PATH = 'my_results/symbol_table.txt'
 #SYMBOLS_FILE_PATH = 'symbol_table.txt'
 
 
+class ActionType(enum.Enum):
+    REDUCE = 'REDUCE'
+    SHIFT = 'SHIfT'
+
 class TokenType(enum.Enum):
     KEYWORD = 'KEYWORD'
     ID = 'ID'
@@ -74,3 +78,37 @@ tokens = {
     TokenType.COMMENT: {'/*': '*/', '//': ['\n', Common.EOF]},
     TokenType.WHITESPACE: ['', '\n', '\r', '\t', '\v', '\f']
 }
+
+def make_test_json_data():
+    #dict_keys(['terminals', 'non_terminals', 'first', 'follow', 'grammar', 'parse_table'])
+    test_data = {
+        'terminals': ['int', '*', '+', '(', ')', '$'],
+        'non_terminals': ['T', 'E'],
+        'first':{
+
+        },
+
+        'follow': {
+
+        },
+
+        'grammar': {
+            '1': ['E', '->', 'T'],
+            '2': ['E', '->', 'T', '+', 'E'],
+            '3': ['T', '->', '(', 'E', ')'],
+            '4': ['T', '->', 'int', '*', 'T'],
+            '5': ['T', '->', 'int'],
+        },
+
+        'parse_table': {
+            '0': {'int': 'shift_4', '(': 'shift_3', 'E': '1', 'T': '2'},
+            '1': {'$': 'accept'},
+            '2': {'+': 'shift_6', ')': 'reduce_1', '$': 'reduce_1'},
+            '4': {'+': 'reduce_5', '*': 'shift_6', ')': 'reduce_5', '$': 'reduce_5'},
+            '6': {'int': 'shift_4', '(': 'shift_3', 'T': '9'},
+            '9': {'+': 'shift_4', ')': 'reduce_4', '$': 'reduce_4'},
+        }
+
+    }
+
+    return test_data

@@ -1,5 +1,5 @@
 from statics import *
-
+from anytree import Node, RenderTree
 
 class Writer:
     def write_tokens(self, tokens_table: dict):
@@ -39,13 +39,6 @@ class Writer:
                 f.writelines(f'{symbols_table.index(token) + len(key_words) + 1}.\t{token}\n')
 
 
-# if __name__ == "__main__":
-    # ttt = {}
-
-    # symbols = ['a', 'b', 'cde', 'if']
-
-    # errors = {7: [('3d', 'Invalid number')], 9: [('cd!', 'Invalid input')]}
-    # writer = Writer()
-    # writer.write_tokens(ttt)
-    # writer.write_symbols(symbols)
-    # writer.write_errors(errors)
+    def write_parse_tree(self, root_node):
+        for pre, fill, node in RenderTree(root_node):
+            print("%s%s" % (pre, node.name))
