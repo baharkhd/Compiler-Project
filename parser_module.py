@@ -11,6 +11,19 @@ from statics import *
 #jan = Node("Jan", parent=dan)
 #joe = Node("Joe", parent=dan)
 
+# Todo: transfer this function to Writer class
+def write_parse_tree(root_node, PATH='parse_tree.txt'):
+
+    tree_lines = ''
+    with open(PATH, "+w", encoding="utf-8") as file:
+        for pre, fill, node in RenderTree(root_node):
+            tree_lines += "%s%s" % (pre, node.name)
+            if node.name != "$":
+                tree_lines += '\n'
+
+        file.write(tree_lines)
+    
+
 class Parser:
     def __init__(self, json_data):
         self.parse_table = json_data['parse_table']
@@ -21,9 +34,10 @@ class Parser:
         self.non_terminals = json_data['non_terminals']
         self.token_pointer = 0
         self.stack = ['0']
+        self.node_stack = []
+        self.root_node = None
 
         self.current_node = None
-        self.nodes = []
 
 
     def return_action(self, action):
@@ -55,7 +69,11 @@ class Parser:
     def create_parse_tree(self, all_tokens):
         # tokens: (#: line_num, TOKEN_TYPE, token)
         while True:
+
+            #if self.token_pointer == len(all_tokens):
+
             print("****", self.stack)
+            #print("@@@@@", self.node_stack)
             token_tuple = all_tokens[self.token_pointer]
             token_type = token_tuple[1]
             token = token_tuple[2]
@@ -76,22 +94,37 @@ class Parser:
             action = self.parse_table[latest_state][token]
             
             if action == 'accept':
-                print("accepted")
+                print("!!!!!!!!accepted\n\n")
                 self.stack.pop()
                 root_node = self.stack.pop()
-                print(root_node)
+
+                self.root_node = self.node_stack[0]
+                self.node_stack[2].parent = self.root_node
+
+                #print(self.root_node, self.node_stack[2])
+
+                for pre, fill, node in RenderTree(self.root_node):
+                    #print("+++", node)
+                    print("%s%s" % (pre, node.name))
+                write_parse_tree(self.root_node)
                 break
 
             action_type, next_state = self.return_action(action)
             
             if action_type == ActionType.SHIFT:
                 self.stack += [token, next_state]
-                self.token_pointer += 1
+                if token_tuple[2] != '$':
+                    self.node_stack += [Node('({}, {})'.format(token_type, token_tuple[2])), '']
+                else:
+                    self.node_stack += [Node('$'), '']
+                if not token == '$':
+                    self.token_pointer += 1
 
             else:
                 grammar_id = self.parse_table[latest_state][token].split('_')[1] # since it is goto_#
                 next_gram = self.grammar[grammar_id]
                 parent_token = next_gram[0]
+                parent_node = Node(parent_token)
                 popped_tokens = []
 
                 is_epsilon = next_gram[2] == 'epsilon'
@@ -99,8 +132,8 @@ class Parser:
                 if not is_epsilon:
                     right_tokens_num = len(next_gram) - 2
                 else:
-                    # Todo: add epsilon as child of parent
                     right_tokens_num = 0
+                    epsilon_node = Node('epsilon', parent=parent_node)
 
                     print("Children:", right_tokens_num)
                     print('epsilon')
@@ -109,18 +142,24 @@ class Parser:
                 print("Children:", right_tokens_num)
 
                 
+                popped_nodes = []
                 for i in range(2 * right_tokens_num):
                     popped = self.stack.pop()
+                    popped_node = self.node_stack.pop()
                     if i % 2 != 0:
                         print(popped)
-                        popped_tokens.append(popped)
-                        #child_node = Node()
+                        popped_nodes.append(popped_node)
                 print()
+
+                popped_nodes.reverse()
+                for pn in popped_nodes:
+                    pn.parent = parent_node
 
                 latest_state = self.stack[-1]
                 print("++++", latest_state, parent_token)
                 next_goto = self.parse_table[latest_state][parent_token].split("_")[1]
                 self.stack += [parent_token, next_goto]
+                self.node_stack += [parent_node, '']
 
                 
 

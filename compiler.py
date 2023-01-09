@@ -15,6 +15,7 @@ def read_json(path='table.json'):
 def run_compiler():
     scanner = Scanner()
     all_tokens = scanner.run_scanner()
+    all_tokens.append((0, 'SYMBOL', '$'))
     #for t in all_tokens:
     #    print(t)
 
@@ -31,12 +32,12 @@ def run_compiler():
 
     print("2.======================================================")   
 
-    #for tok in all_tokens:
-    #    print(tok)
+    for tok in all_tokens:
+        print(tok)
 
-    #print("3.======================================================") 
+    print("3.======================================================") 
 
-    all_tokens.append((0, 'SYMBOL', '$'))
+    
     parser.create_parse_tree(all_tokens)
 
 
