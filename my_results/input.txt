@@ -1,16 +1,20 @@
-int main(){
-	while (arr[2milk]> 2){
-		x = 23apple;
-		mk3 = x + 1;
-		if mk3 == 52 :
-			b =# 32;
-			return 2;
-		break;
-	}
-	this = 2;
-	return;;!
+void main (void){
+int n = 34mn;
+int m = 3;
+int p = 32;
+int q = 3 * (m + n);
+while (m <  20 ){
+p = p + 1;
+m = m * 2;
 }
-# end of the code
-/* end of end of the code
-# hmmmmmm
-@#$#%%$*/
+switch (m) {
+case 3:
+q = 1;
+break;
+case 12:
+q = 5df;
+break;
+default:
+n = /*unclosed comment
+}
+// end of test
