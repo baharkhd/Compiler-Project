@@ -1,10 +1,6 @@
 from anytree import Node, RenderTree
 import json
 import re
-
-import sys 
-sys.path.insert(1, '/Users/bahar/Desktop/SUT/7. fall 01-02/Compiler/project/phase1/Compiler-Project/')
-
 from statics import *
 
 #udo = Node("Udo")
@@ -57,12 +53,6 @@ class Parser:
 
 
     def create_parse_tree(self, tokens):
-        input = "int * int $"
-
-        goto = 'var_declaration'
-        action = 'reduce_99'
-
-
         while True:
             print("****", self.stack)
             token = tokens[self.token_pointer]
@@ -128,6 +118,7 @@ def read_json(path='table.json'):
 
 
 if __name__ == "__main__":
+
 
 
     test_json_data = make_test_json_data()
