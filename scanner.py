@@ -241,13 +241,16 @@ class Scanner:
                 break
 
 
+        
         tokens_dict = self.handle_all_tokens(all_tokens)
         errors_dict = self.handle_all_errors(all_errors)
         all_keys_ids = list(set(all_keys_ids))
 
-        self.writer.write_tokens(tokens_dict)
-        self.writer.write_errors(errors_dict)
-        self.writer.write_symbols(all_keys_ids)
+        return all_tokens
+
+        #self.writer.write_tokens(tokens_dict)
+        #self.writer.write_errors(errors_dict)
+        #self.writer.write_symbols(all_keys_ids)
 
         
 

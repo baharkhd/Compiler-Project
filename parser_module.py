@@ -52,13 +52,24 @@ class Parser:
 
 
 
-    def create_parse_tree(self, tokens):
+    def create_parse_tree(self, all_tokens):
+        # tokens: (#: line_num, TOKEN_TYPE, token)
         while True:
             print("****", self.stack)
-            token = tokens[self.token_pointer]
+            token_tuple = all_tokens[self.token_pointer]
+            token_type = token_tuple[1]
+            token = token_tuple[2]
+            
+
+            if token_type == TokenType.KEYWORD_ID.value and token in tokens[TokenType.KEYWORD]:
+                token_type = TokenType.KEYWORD.value
+            elif token_type == TokenType.KEYWORD_ID.value:
+                token = TokenType.ID.value
+                token_type = TokenType.ID.value
+
             latest_state = self.stack[-1]
-            #if self.is_terminal(token):
                 
+            print(token_tuple, token_type, token)
             action = self.parse_table[latest_state][token]
             
             if action == 'accept':
@@ -81,7 +92,6 @@ class Parser:
 
                 right_tokens_num = len(next_gram) - 2
 
-                #self.current_node = parent_node = Node(next_gram[0])
                 print("Parent:", parent_token)
                 print("Children:")
 
@@ -94,17 +104,12 @@ class Parser:
                         #child_node = Node()
                 print()
 
-
                 latest_state = self.stack[-1]
-                #print("-----", self.parse_table[latest_state][parent_token])
-                next_goto = self.parse_table[latest_state][parent_token]
-                #.split('_')[1]
+                print("++++", latest_state, parent_token)
+                next_goto = self.parse_table[latest_state][parent_token].split("_")[1]
                 self.stack += [parent_token, next_goto]
 
-            #elif self.is_non_terminal(token):
                 
-
-
 
 def read_json(path='table.json'):
     f = open('table.json')
@@ -112,9 +117,6 @@ def read_json(path='table.json'):
     f.close()
 
     return data
-
-
-
 
 
 if __name__ == "__main__":
