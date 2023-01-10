@@ -1,5 +1,7 @@
 from statics import *
 import re
+
+
 class Reader:
     def __init__(self):
         self.input_file = open(INPUT_FILE_PATH)
@@ -25,7 +27,6 @@ class Reader:
         else:
             self.string_read = ''
 
-
     def get_char_type(self, char):
         if re.match(CharType.DIGIT.value, char):
             return CharType.DIGIT
@@ -45,7 +46,6 @@ class Reader:
             return CharType.SLASH
         else:
             return CharType.INVALID
-        
 
     def get_next_char(self):
         ch = self.input_file.read(1)
@@ -64,8 +64,6 @@ class Reader:
                 if not next_char:
                     break
                 self.string_read += next_char
-
-            # print(self.string_read)
 
 
 if __name__ == "__main__":

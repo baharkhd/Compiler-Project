@@ -1,6 +1,11 @@
-#from scanner_module import Scanner
 from parser_module import Parser
-import json 
+import json
+
+'''
+NAME: DORNA DEHGHANI
+ID: 97105939
+'''
+
 
 # TODO: put this in Reader class
 def read_json(path='table.json'):
@@ -11,19 +16,9 @@ def read_json(path='table.json'):
 
 
 def run_compiler():
-    #scanner = Scanner()
-    #all_tokens = scanner.run_scanner()
-
     json_data = read_json('table.json')
     parser = Parser(json_data)
-
-    #for k, v in parser.parse_table.items():
-    #    print(k, v)
-
-    #print("===================================================")
     parser.run_parser()
-
-    #parser.create_parse_tree(all_tokens)
 
 
 if __name__ == "__main__":

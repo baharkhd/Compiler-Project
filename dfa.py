@@ -16,12 +16,7 @@ class State:
         self.transitions[action] = dest_s
 
     def get_next_state(self, action):
-        #print(self.id, action)
-        #if self.id == 12:
-        #    print("-------------")
         if action in self.transitions.keys():
-            #if self.transitions[action].id == 13:
-            #    print("+++++++")
             return self.transitions[action]
         else:
             return Common.ERROR_DETECTED
@@ -53,7 +48,6 @@ class DFA:
         self.states[18].token_type = TokenType.SYMBOL
 
     def define_dfa(self):
-        #state0
         self.start_state.add_transition(CharType.DIGIT, self.states[1])
         self.start_state.add_transition(CharType.LETTER, self.states[3])
         self.start_state.add_transition(CharType.WHITESPACE, self.states[5])
@@ -63,9 +57,8 @@ class DFA:
         self.start_state.add_transition(CharType.SLASH, self.states[10])
         self.start_state.add_transition(CharType.STAR, self.states[17])
 
-        #state1
+        # state1
         self.states[1].add_transition(CharType.DIGIT, self.states[1])
-        #self.states[1].add_transition(CharType.LETTER, self.states[2])
         self.states[1].add_transition(CharType.WHITESPACE, self.states[2])
         self.states[1].add_transition(CharType.ENTER, self.states[2])
         self.states[1].add_transition(CharType.SINGLE_SYMBOL, self.states[2])
@@ -73,9 +66,8 @@ class DFA:
         self.states[1].add_transition(CharType.SLASH, self.states[2])
         self.states[1].add_transition(CharType.STAR, self.states[2])
         self.states[1].add_transition(CharType.EOF, self.states[2])
-        # self.states[1].add_transition(CharType.NOT_DIGIT_LETTER, self.states[2])
 
-        #state3
+        # state3
         self.states[3].add_transition(CharType.LETTER, self.states[3])
         self.states[3].add_transition(CharType.DIGIT, self.states[3])
         self.states[3].add_transition(CharType.WHITESPACE, self.states[4])
@@ -85,9 +77,8 @@ class DFA:
         self.states[3].add_transition(CharType.SLASH, self.states[4])
         self.states[3].add_transition(CharType.STAR, self.states[4])
         self.states[3].add_transition(CharType.EOF, self.states[4])
-        # self.states[3].add_transition(CharType.NOT_DIGIT_LETTER, self.states[4])
 
-        #state7
+        # state7
         self.states[7].add_transition(CharType.EQUAL, self.states[8])
         self.states[7].add_transition(CharType.LETTER, self.states[9])
         self.states[7].add_transition(CharType.DIGIT, self.states[9])
@@ -96,10 +87,8 @@ class DFA:
         self.states[7].add_transition(CharType.SINGLE_SYMBOL, self.states[9])
         self.states[7].add_transition(CharType.SLASH, self.states[9])
         self.states[7].add_transition(CharType.STAR, self.states[9])
-        # self.states[7].add_transition(CharType.EOF, self.states[9])
-        # self.states[7].add_transition(CharType.NEQUAL, self.states[9])
 
-        #state10
+        # state10
         self.states[10].add_transition(CharType.STAR, self.states[11])
         self.states[10].add_transition(CharType.SLASH, self.states[14])
         self.states[10].add_transition(CharType.EQUAL, self.states[16])
@@ -108,11 +97,8 @@ class DFA:
         self.states[10].add_transition(CharType.WHITESPACE, self.states[16])
         self.states[10].add_transition(CharType.ENTER, self.states[16])
         self.states[10].add_transition(CharType.SINGLE_SYMBOL, self.states[16])
-        # self.states[10].add_transition(CharType.EOF, self.states[16])
-        # self.states[10].add_transition(CharType.NSTAR_NSLASH, self.states[16])
 
-        #state11
-        # self.states[11].add_transition(CharType.NSTAR, self.states[11])
+        # state11
         self.states[11].add_transition(CharType.EQUAL, self.states[11])
         self.states[11].add_transition(CharType.LETTER, self.states[11])
         self.states[11].add_transition(CharType.DIGIT, self.states[11])
@@ -120,22 +106,19 @@ class DFA:
         self.states[11].add_transition(CharType.ENTER, self.states[11])
         self.states[11].add_transition(CharType.SINGLE_SYMBOL, self.states[11])
         self.states[11].add_transition(CharType.SLASH, self.states[11])
-        # self.states[11].add_transition(CharType.EOF, self.states[11])
         self.states[11].add_transition(CharType.STAR, self.states[12])
 
-        #state12
-        # self.states[12].add_transition(CharType.NSTAR_NSLASH, self.states[11])
+        # state12
         self.states[12].add_transition(CharType.EQUAL, self.states[11])
         self.states[12].add_transition(CharType.LETTER, self.states[11])
         self.states[12].add_transition(CharType.DIGIT, self.states[11])
         self.states[12].add_transition(CharType.ENTER, self.states[11])
         self.states[12].add_transition(CharType.WHITESPACE, self.states[11])
         self.states[12].add_transition(CharType.SINGLE_SYMBOL, self.states[11])
-        # self.states[12].add_transition(CharType.EOF, self.states[11])
         self.states[12].add_transition(CharType.STAR, self.states[12])
         self.states[12].add_transition(CharType.SLASH, self.states[13])
 
-        #state14
+        # state14
         self.states[14].add_transition(CharType.EOF, self.states[15])
         self.states[14].add_transition(CharType.ENTER, self.states[15])
 
@@ -146,22 +129,12 @@ class DFA:
         self.states[14].add_transition(CharType.STAR, self.states[14])
         self.states[14].add_transition(CharType.SLASH, self.states[14])
         self.states[14].add_transition(CharType.EQUAL, self.states[14])
-        
 
-        #state17
-        # self.states[17].add_transition(CharType.NSLASH, self.states[18])
+        # state17
         self.states[17].add_transition(CharType.EQUAL, self.states[18])
         self.states[17].add_transition(CharType.LETTER, self.states[18])
         self.states[17].add_transition(CharType.DIGIT, self.states[18])
         self.states[17].add_transition(CharType.ENTER, self.states[18])
         self.states[17].add_transition(CharType.WHITESPACE, self.states[18])
         self.states[17].add_transition(CharType.SINGLE_SYMBOL, self.states[18])
-        # self.states[12].add_transition(CharType.EOF, self.states[11])
         self.states[17].add_transition(CharType.STAR, self.states[18])
-        # self.states[17].add_transition(CharType.SLASH, self.states[13]) !!ERROR!!
-
-
-
-#if __name__ == "__main__":
-#    dfa = DFA(Common.N_OF_STATES)
-#    dfa.define_dfa()

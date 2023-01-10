@@ -1,11 +1,6 @@
 import enum
 import re
 
-
-#INPUT_FILE_PATH = 'my_results/input.txt'
-#TOKENS_FILE_PATH = 'my_results/tokens.txt'
-#ERRORS_FILE_PATH = 'my_results/lexical_errors.txt'
-#SYMBOLS_FILE_PATH = 'my_results/symbol_table.txt'
 INPUT_FILE_PATH = 'input.txt'
 TOKENS_FILE_PATH = 'tokens.txt'
 ERRORS_FILE_PATH = 'lexical_errors.txt'
@@ -15,6 +10,7 @@ SYMBOLS_FILE_PATH = 'symbol_table.txt'
 class ActionType(enum.Enum):
     REDUCE = 'REDUCE'
     SHIFT = 'SHIfT'
+
 
 class TokenType(enum.Enum):
     KEYWORD = 'KEYWORD'
@@ -73,12 +69,14 @@ class ErrorType(enum.Enum):
     UNMATCHED_COMMENT = 'Unmatched comment'
     UNCLOSED_COMMENT = 'Unclosed comment'
 
+
 tokens = {
     TokenType.KEYWORD: ['if', 'else', 'void', 'int', 'while', 'break', 'switch', 'default', 'case', 'return', 'endif'],
     TokenType.SYMBOL: [';', ':', ',', '[', ']', '(', ')', '{', '}', '+', '-', '*', '=', '<', '==', '/'],
     TokenType.COMMENT: {'/*': '*/', '//': ['\n', Common.EOF]},
     TokenType.WHITESPACE: ['', '\n', '\r', '\t', '\v', '\f']
 }
+
 
 def get_token_type(token):
     if token in tokens[TokenType.KEYWORD]:
@@ -89,7 +87,7 @@ def get_token_type(token):
         return TokenType.NUM.value
     else:
         return TokenType.ID.value
-    
+
 
 class ParserErrorType(enum.Enum):
     ILLEGAL_ERROR = 'ILLEGAL_ERROR'
@@ -100,11 +98,10 @@ class ParserErrorType(enum.Enum):
 
 
 def make_test_json_data():
-    #dict_keys(['terminals', 'non_terminals', 'first', 'follow', 'grammar', 'parse_table'])
     test_data = {
         'terminals': ['int', '*', '+', '(', ')', '$'],
         'non_terminals': ['T', 'E'],
-        'first':{
+        'first': {
 
         },
 

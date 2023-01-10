@@ -1,6 +1,7 @@
 from statics import *
 from anytree import Node, RenderTree
 
+
 class Writer:
     def write_tokens(self, tokens_table: dict):
         key_words = tokens[TokenType.KEYWORD]
@@ -37,7 +38,6 @@ class Writer:
             symbols_table = [s for s in symbols_table if s not in key_words]
             for token in symbols_table:
                 f.writelines(f'{symbols_table.index(token) + len(key_words) + 1}.\t{token}\n')
-
 
     def write_parse_tree(self, root_node):
         for pre, fill, node in RenderTree(root_node):
