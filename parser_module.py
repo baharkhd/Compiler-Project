@@ -102,7 +102,8 @@ class Parser:
         while len(self.stack):
             #print("???")
             curr_state = self.stack[-1]
-            curr_token = self.stack[-2]
+            curr_token = self.stack[-2][1]
+            curr_token_type = self.stack[-2][0]
 
             #print("+++++" ,curr_token, curr_state)
 
@@ -110,9 +111,9 @@ class Parser:
                 self.choose_next_token(curr_state)
                 break
             else:
-                token_type = get_token_type(curr_token)
-                if self.is_terminal(curr_token):
-                    self.add_error("({}, {})".format(token_type, curr_token), ParserErrorType.STACK_DISCARDED)
+                #if self.is_terminal(curr_token):
+                if curr_token_type == 'ID' or curr_token_type == 'NUM' or curr_token_type == 'KEYWORD' or curr_token_type == 'SYMBOL':
+                    self.add_error("({}, {})".format(curr_token_type, curr_token), ParserErrorType.STACK_DISCARDED)
                 else:
                     self.add_error(curr_token, ParserErrorType.STACK_DISCARDED)
                 self.stack.pop()
@@ -149,7 +150,7 @@ class Parser:
             found_nt = False
             for (nt, goto) in goto_nonterms:
                 if next_token in self.follow[nt]:
-                    self.stack += [nt, goto.split('_')[1]]
+                    self.stack += [(nt, nt), goto.split('_')[1]]
                     self.add_error(nt, ParserErrorType.MISSING_ERROR)
                     found_nt = True
                     break
@@ -227,7 +228,7 @@ class Parser:
             action_type, next_state = self.return_action(action)
             
             if action_type == ActionType.SHIFT:
-                self.stack += [token, next_state]
+                self.stack += [(token_type, token_tuple[2]), next_state]
                 if token_tuple[2] != '$':
                     self.node_stack += [Node('({}, {})'.format(token_type, token_tuple[2])), '']
                 else:
@@ -272,7 +273,7 @@ class Parser:
                 latest_state = self.stack[-1]
                 print("++++", latest_state, parent_token)
                 next_goto = self.parse_table[latest_state][parent_token].split("_")[1]
-                self.stack += [parent_token, next_goto]
+                self.stack += [(parent_token, parent_token), next_goto]
                 self.node_stack += [parent_node, '']
 
                 
