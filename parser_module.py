@@ -11,7 +11,7 @@ from statics import *
 #jan = Node("Jan", parent=dan)
 #joe = Node("Joe", parent=dan)
 
-# Todo: transfer this function to Writer class
+# TODO: transfer this function to Writer class
 def write_parse_tree(root_node, PATH='parse_tree.txt'):
 
     tree_lines = ''
@@ -22,7 +22,12 @@ def write_parse_tree(root_node, PATH='parse_tree.txt'):
                 tree_lines += '\n'
 
         file.write(tree_lines)
-    
+
+# TODO: transfer this function to Writer class
+def write_errors(all_errors, PATH='syntax_errors.txt'):
+    with open(PATH, "+w", encoding="utf-8") as file:
+        for err in all_errors:
+            file.write(err + "\n") 
 
 class Parser:
     def __init__(self, json_data):
@@ -36,8 +41,12 @@ class Parser:
         self.stack = ['0']
         self.node_stack = []
         self.root_node = None
+        self.line_num = 0
+        self.all_tokens = []
+        self.unexpected_EOF = False
 
         self.current_node = None
+        self.all_errors = []
 
 
     def return_action(self, action):
@@ -64,17 +73,107 @@ class Parser:
             return True
         return False
 
+    def add_error(self, token, error_type: ParserErrorType):
+        # TODO: here we should have a tuple as token
+        print("----- adding error {} for {}".format(error_type.value, token))
+        error = ''
+        if error_type == ParserErrorType.ILLEGAL_ERROR:
+            error = '#{} : syntax error, illegal {}'.format(self.line_num, token)
+        elif error_type == ParserErrorType.INPUT_DISCARDED:
+            error = '#{} : syntax error, discarded {} from input'.format(self.line_num, token)
+        elif error_type == ParserErrorType.STACK_DISCARDED:
+            error = 'syntax error, discarded {} from stack'.format(token)
+        elif error_type == ParserErrorType.MISSING_ERROR:
+            error = '#{} : syntax error, missing {}'.format(self.line_num, token)
+        elif error_type == ParserErrorType.UNEXPECTED_EOF:
+            error = '#{} : syntax error, Unexpected EOF'.format(self.line_num)
+        
+        self.all_errors.append(error)
+
+    def has_goto(self, state):
+        actions = self.parse_table[state].values()
+        for action in actions:
+            if re.match(r'goto_[0-9]+', action):
+                return True
+
+        return False
+
+    def get_closest_valid_state(self):
+        while len(self.stack):
+            #print("???")
+            curr_state = self.stack[-1]
+            curr_token = self.stack[-2]
+
+            #print("+++++" ,curr_token, curr_state)
+
+            if self.has_goto(curr_state):
+                self.choose_next_token(curr_state)
+                break
+            else:
+                token_type = get_token_type(curr_token)
+                self.add_error("({}, {})".format(token_type, curr_token), ParserErrorType.STACK_DISCARDED)
+                self.stack.pop()
+                self.stack.pop()
+
+    def choose_next_token(self, state):
+        goto_nonterms = []
+        for k, v in self.parse_table[state].items():
+            if re.match(r'goto_[0-9]+', v):
+                goto_nonterms.append((k, v))
+        
+        # sorting non-terminals
+        goto_nonterms = sorted(goto_nonterms, key=lambda tup: tup[0])
+
+        while True:
+            self.token_pointer += 1
+            next_token_tuple = self.all_tokens[self.token_pointer]
+            next_token_type = next_token_tuple[1]
+            next_token = next_token_tuple[2]
+            if next_token != '$':
+                self.line_num = next_token_tuple[0]
+            else:
+                self.line_num += 1
+
+
+            if next_token_type == TokenType.KEYWORD_ID.value and not next_token in tokens[TokenType.KEYWORD]:
+                next_token = TokenType.ID.value
+            elif next_token_type == TokenType.KEYWORD_ID.value:
+                next_token_type = TokenType.KEYWORD.value
+            elif next_token_type == TokenType.NUM.value:
+                next_token = TokenType.NUM.value
+                next_token_type = TokenType.NUM.value
+
+            found_nt = False
+            for (nt, goto) in goto_nonterms:
+                if next_token in self.follow[nt]:
+                    self.stack += [nt, goto.split('_')[1]]
+                    self.add_error(nt, ParserErrorType.MISSING_ERROR)
+                    found_nt = True
+                    break
+
+            if found_nt:
+                break
+            else:
+                if next_token == '$':
+                    self.add_error('$', ParserErrorType.UNEXPECTED_EOF)
+                    self.unexpected_EOF = True
+                    break
+                else:
+                    self.add_error(next_token_tuple[2], ParserErrorType.INPUT_DISCARDED)
+            
+
 
 
     def create_parse_tree(self, all_tokens):
+        self.all_tokens = all_tokens
         # tokens: (#: line_num, TOKEN_TYPE, token)
         while True:
-
-            #if self.token_pointer == len(all_tokens):
-
+            if self.unexpected_EOF:
+                write_errors(self.all_errors)
+                break
             print("****", self.stack)
-            #print("@@@@@", self.node_stack)
             token_tuple = all_tokens[self.token_pointer]
+            self.line_num = token_tuple[0]
             token_type = token_tuple[1]
             token = token_tuple[2]
             
@@ -91,6 +190,13 @@ class Parser:
             latest_state = self.stack[-1]
                 
             print(token_tuple, token_type, token)
+
+            if not token in self.parse_table[latest_state].keys():
+                # illegal error
+                self.add_error(token, ParserErrorType.ILLEGAL_ERROR)
+                self.get_closest_valid_state()
+                continue
+
             action = self.parse_table[latest_state][token]
             
             if action == 'accept':
@@ -106,6 +212,12 @@ class Parser:
                 for pre, fill, node in RenderTree(self.root_node):
                     #print("+++", node)
                     print("%s%s" % (pre, node.name))
+
+                if len(self.all_errors) != 0:
+                    write_errors(self.all_errors)
+                else:
+                    write_errors(['There is no syntax error.'])
+
                 write_parse_tree(self.root_node)
                 break
 
@@ -125,7 +237,6 @@ class Parser:
                 next_gram = self.grammar[grammar_id]
                 parent_token = next_gram[0]
                 parent_node = Node(parent_token)
-                popped_tokens = []
 
                 is_epsilon = next_gram[2] == 'epsilon'
 

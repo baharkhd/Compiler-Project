@@ -1,4 +1,5 @@
 import enum
+import re
 
 
 INPUT_FILE_PATH = 'my_results/input.txt'
@@ -78,6 +79,25 @@ tokens = {
     TokenType.COMMENT: {'/*': '*/', '//': ['\n', Common.EOF]},
     TokenType.WHITESPACE: ['', '\n', '\r', '\t', '\v', '\f']
 }
+
+def get_token_type(token):
+    if token in tokens[TokenType.KEYWORD]:
+        return TokenType.KEYWORD.value
+    elif token in tokens[TokenType.SYMBOL]:
+        return TokenType.SYMBOL.value
+    elif re.match(r'[0-9]+', token):
+        return TokenType.NUM.value
+    else:
+        return TokenType.ID.value
+    
+
+class ParserErrorType(enum.Enum):
+    ILLEGAL_ERROR = 'ILLEGAL_ERROR'
+    INPUT_DISCARDED = 'INPUT_DISCARDED'
+    STACK_DISCARDED = 'STACK_DISCARDED'
+    MISSING_ERROR = 'MISSING_ERROR'
+    UNEXPECTED_EOF = 'UNEXPECTED_EOF'
+
 
 def make_test_json_data():
     #dict_keys(['terminals', 'non_terminals', 'first', 'follow', 'grammar', 'parse_table'])

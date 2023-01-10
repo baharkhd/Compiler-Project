@@ -32,6 +32,7 @@ def run_compiler():
 
     print("2.======================================================")   
 
+    print(len(all_tokens))
     for tok in all_tokens:
         print(tok)
 
