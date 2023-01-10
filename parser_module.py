@@ -2,18 +2,10 @@ from anytree import Node, RenderTree
 import json
 import re
 from statics import *
-
-#udo = Node("Udo")
-#marc = Node("Marc", parent=udo)
-#lian = Node("Lian", parent=marc)
-#dan = Node("Dan", parent=udo)
-#jet = Node("Jet", parent=dan)
-#jan = Node("Jan", parent=dan)
-#joe = Node("Joe", parent=dan)
+from scanner_module import Scanner
 
 # TODO: transfer this function to Writer class
 def write_parse_tree(root_node, PATH='parse_tree.txt'):
-
     tree_lines = ''
     with open(PATH, "+w", encoding="utf-8") as file:
         for pre, fill, node in RenderTree(root_node):
@@ -47,6 +39,17 @@ class Parser:
 
         self.current_node = None
         self.all_errors = []
+        self.current_token = None
+        self.need_next_token = True
+
+        self.scanner = Scanner()
+
+        with open('parse_tree.txt', 'w') as f:
+            pass
+        
+    def run_parser(self):
+        #all_tokens = scanner.run_scanner()
+        self.create_parse_tree()
 
 
     def return_action(self, action):
@@ -74,7 +77,6 @@ class Parser:
         return False
 
     def add_error(self, token, error_type: ParserErrorType):
-        #print("----- adding error {} for {}".format(error_type.value, token))
         error = ''
         if error_type == ParserErrorType.ILLEGAL_ERROR:
             error = '#{} : syntax error , illegal {}'.format(self.line_num, token)
@@ -98,19 +100,21 @@ class Parser:
         return False
 
     def get_closest_valid_state(self):
-        while len(self.stack):
-            #print("???")
+        while len(self.stack) > 0:
+
+            if len(self.stack) == 1:
+                curr_state = self.stack[0]
+                self.choose_next_token(curr_state)
+                break
+
             curr_state = self.stack[-1]
             curr_token = self.stack[-2][1]
             curr_token_type = self.stack[-2][0]
-
-            #print("+++++" ,curr_token, curr_state)
 
             if self.has_goto(curr_state):
                 self.choose_next_token(curr_state)
                 break
             else:
-                #if self.is_terminal(curr_token):
                 if curr_token_type == 'ID' or curr_token_type == 'NUM' or curr_token_type == 'KEYWORD' or curr_token_type == 'SYMBOL':
                     self.add_error("({}, {})".format(curr_token_type, curr_token), ParserErrorType.STACK_DISCARDED)
                 else:
@@ -132,8 +136,18 @@ class Parser:
         goto_nonterms = sorted(goto_nonterms, key=lambda tup: tup[0])
 
         while True:
-            self.token_pointer += 1
-            next_token_tuple = self.all_tokens[self.token_pointer]
+            #self.token_pointer += 1
+            #next_token_tuple = self.all_tokens[self.token_pointer]
+
+            while True:
+                next_token_tuple = self.scanner.next_token()
+                #print("here??????????", next_token_tuple)
+                self.current_token = next_token_tuple
+
+                if self.current_token:
+                    break
+
+
             next_token_type = next_token_tuple[1]
             next_token = next_token_tuple[2]
             if next_token != '$':
@@ -175,15 +189,33 @@ class Parser:
 
 
 
-    def create_parse_tree(self, all_tokens):
+    def create_parse_tree(self, all_tokens=[]):
         self.all_tokens = all_tokens
         # tokens: (#: line_num, TOKEN_TYPE, token)
         while True:
+            #print("****", self.stack)
             if self.unexpected_EOF:
                 write_errors(self.all_errors)
                 break
-            #print("****", self.stack)
-            token_tuple = all_tokens[self.token_pointer]
+
+            #token_tuple = all_tokens[self.token_pointer]
+
+            #token_tuple = self.current_token
+            #print("------", self.need_next_token)
+            if self.need_next_token:
+                while True:
+                    token_tuple = self.scanner.next_token()
+                    self.current_token = token_tuple
+                    #print("------", self.current_token)
+
+                    if self.current_token:
+                        break
+                
+            else:
+                token_tuple = self.current_token
+                self.need_next_token = True
+
+
             self.line_num = token_tuple[0]
             token_type = token_tuple[1]
             token = token_tuple[2]
@@ -199,13 +231,14 @@ class Parser:
                 token_type = TokenType.NUM.value
 
             latest_state = self.stack[-1]
-                
-            #print(token_tuple, token_type, token)
 
+            #print("+++++", token, latest_state)
             if not token in self.parse_table[latest_state].keys():
                 # illegal error
                 self.add_error(token_tuple[2], ParserErrorType.ILLEGAL_ERROR)
+                #print("vaaaaaaaaaaaaaa?")
                 self.get_closest_valid_state()
+                self.need_next_token = False
                 continue
 
             action = self.parse_table[latest_state][token]
@@ -218,11 +251,6 @@ class Parser:
                 self.root_node = self.node_stack[0]
                 self.node_stack[2].parent = self.root_node
 
-                #print(self.root_node, self.node_stack[2])
-
-                #for pre, fill, node in RenderTree(self.root_node):
-                #    print("%s%s" % (pre, node.name))
-
                 if len(self.all_errors) != 0:
                     write_errors(self.all_errors)
                 else:
@@ -234,6 +262,7 @@ class Parser:
             action_type, next_state = self.return_action(action)
             
             if action_type == ActionType.SHIFT:
+                #print("SHIFT")
                 self.stack += [(token_type, token_tuple[2]), next_state]
                 if token_tuple[2] != '$':
                     self.node_stack += [Node('({}, {})'.format(token_type, token_tuple[2])), '']
@@ -241,8 +270,11 @@ class Parser:
                     self.node_stack += [Node('$'), '']
                 if not token == '$':
                     self.token_pointer += 1
+                else:
+                    self.need_next_token = False
 
             else:
+                #print("REDUCE")
                 grammar_id = self.parse_table[latest_state][token].split('_')[1] # since it is goto_#
                 next_gram = self.grammar[grammar_id]
                 parent_token = next_gram[0]
@@ -256,31 +288,23 @@ class Parser:
                     right_tokens_num = 0
                     epsilon_node = Node('epsilon', parent=parent_node)
 
-                    #print("Children:", right_tokens_num)
-                    #print('epsilon')
-
-                #print("Parent:", parent_token)
-                #print("Children:", right_tokens_num)
-
-                
                 popped_nodes = []
                 for i in range(2 * right_tokens_num):
                     popped = self.stack.pop()
                     popped_node = self.node_stack.pop()
                     if i % 2 != 0:
-                        #print(popped)
                         popped_nodes.append(popped_node)
-                #print()
 
                 popped_nodes.reverse()
                 for pn in popped_nodes:
                     pn.parent = parent_node
 
                 latest_state = self.stack[-1]
-                #print("++++", latest_state, parent_token)
                 next_goto = self.parse_table[latest_state][parent_token].split("_")[1]
                 self.stack += [(parent_token, parent_token), next_goto]
                 self.node_stack += [parent_node, '']
+
+                self.need_next_token = False
 
                 
 
@@ -291,25 +315,16 @@ def read_json(path='table.json'):
 
     return data
 
-
 if __name__ == "__main__":
+    scanner = Scanner()
+    all_tokens = scanner.run_scanner()
 
 
 
-    test_json_data = make_test_json_data()
-    json_data = read_json('table.json')
-    parser = Parser(test_json_data)
+    #test_json_data = make_test_json_data()
+    #json_data = read_json('table.json')
+    #parser = Parser(test_json_data)
     
 
-    tokens = ['int', '*', 'int', '$']
-    parser.create_parse_tree(tokens)
-
-    #for k, v in parser.grammar.items():
-    #    print(k, ":", v)
-
-    #print()
-    
-    #for k, v in parser.parse_table.items():
-    #    print(k, ":", v)
-
-
+    #tokens = ['int', '*', 'int', '$']
+    #parser.create_parse_tree(tokens)

@@ -1,22 +1,11 @@
-/* sample 9 */
+/* sample 15 */
 
-int f(int a) {
-    void g(int b) {
-        output(b);
-        f(b-b);
-    }
-    if (a == ) {
-        output(a);
-        return 0-0;
-    } else {
-        g(a-a);
-	t = 0;
-    }
+int global 1;
 
-    endif
+void main(void){
+	int a[10]; int b;
+	print(a);
+	int c[10], int c;
 }
 
-
-void main(void) {
-    f(10);
-}
+int global2;

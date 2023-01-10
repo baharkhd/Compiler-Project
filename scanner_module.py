@@ -24,6 +24,7 @@ class Scanner:
         self.start_comment_line = 1
 
         self.start = True
+        self.text = self.reader.read_input_code()
 
     def check_EOF(self):
         if self.reader.end_pointer >= len(self.text):
@@ -218,29 +219,33 @@ class Scanner:
 
         return errors_dict
 
-    def run_scanner(self):
-        self.text = self.reader.read_input_code()
-
-        all_tokens = []
-        all_errors = []
-        all_keys_ids = []
-
+    #def run_scanner(self):
+    def next_token(self):
+        #print("here")
         
-        while True:
-            #print("====")
-            self.curr_state = self.dfa.start_state
-            token, errors, keys_ids = self.get_next_token()
-            if token and token[1] != TokenType.WHITESPACE.value and token[1] != TokenType.COMMENT.value:
-                all_tokens.append(token)
 
-            all_errors.extend(errors)
-            all_keys_ids.extend(keys_ids)
+        #all_tokens = []
+        #all_errors = []
+        #all_keys_ids = []
 
-            #print("-----", self.reader.end_pointer, len(self.text))
-            if self.check_EOF():
-                break
+        if self.check_EOF():
+            return (0, 'SYMBOL', '$')
+        
+        #while True:
+        self.curr_state = self.dfa.start_state
+        token, errors, keys_ids = self.get_next_token()
+        #print("??????", token)
+        if token and token[1] != TokenType.WHITESPACE.value and token[1] != TokenType.COMMENT.value:
+            #all_tokens.append(token)
+            #print("******")
+            return token
 
-        all_tokens.append((0, 'SYMBOL', '$'))
+        #all_errors.extend(errors)
+        #all_keys_ids.extend(keys_ids)
+
+        return None
+
+        #all_tokens.append((0, 'SYMBOL', '$'))
         
         #tokens_dict = self.handle_all_tokens(all_tokens)
         #errors_dict = self.handle_all_errors(all_errors)
