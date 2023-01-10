@@ -78,15 +78,15 @@ class Parser:
         print("----- adding error {} for {}".format(error_type.value, token))
         error = ''
         if error_type == ParserErrorType.ILLEGAL_ERROR:
-            error = '#{} : syntax error, illegal {}'.format(self.line_num, token)
+            error = '#{} : syntax error , illegal {}'.format(self.line_num, token)
         elif error_type == ParserErrorType.INPUT_DISCARDED:
-            error = '#{} : syntax error, discarded {} from input'.format(self.line_num, token)
+            error = '#{} : syntax error , discarded {} from input'.format(self.line_num, token)
         elif error_type == ParserErrorType.STACK_DISCARDED:
-            error = 'syntax error, discarded {} from stack'.format(token)
+            error = 'syntax error , discarded {} from stack'.format(token)
         elif error_type == ParserErrorType.MISSING_ERROR:
-            error = '#{} : syntax error, missing {}'.format(self.line_num, token)
+            error = '#{} : syntax error , missing {}'.format(self.line_num, token)
         elif error_type == ParserErrorType.UNEXPECTED_EOF:
-            error = '#{} : syntax error, Unexpected EOF'.format(self.line_num)
+            error = '#{} : syntax error , Unexpected EOF'.format(self.line_num)
         
         self.all_errors.append(error)
 
@@ -111,7 +111,10 @@ class Parser:
                 break
             else:
                 token_type = get_token_type(curr_token)
-                self.add_error("({}, {})".format(token_type, curr_token), ParserErrorType.STACK_DISCARDED)
+                if self.is_terminal(curr_token):
+                    self.add_error("({}, {})".format(token_type, curr_token), ParserErrorType.STACK_DISCARDED)
+                else:
+                    self.add_error(curr_token, ParserErrorType.STACK_DISCARDED)
                 self.stack.pop()
                 self.stack.pop()
 
