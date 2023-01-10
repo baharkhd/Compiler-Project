@@ -4,11 +4,11 @@ from dfa import *
 
 
 class Scanner:
-    def __init__(self):
+    def __init__(self, reader: Reader, writer: Writer):
         self.dfa = DFA(Common.N_OF_STATES.value)
         self.dfa.define_dfa()
-        self.reader = Reader()
-        self.writer = Writer()
+        self.reader = reader
+        self.writer = writer
 
         self.text = ''
         self.curr_state = None
@@ -97,7 +97,6 @@ class Scanner:
                 if self.curr_state.id == 17:
                     self.curr_state = self.dfa.start_state
 
-                    # Here we handle Unmatched comment
                     token = self.text[self.reader.start_pointer:self.reader.end_pointer]
                     token_type = ErrorType.UNMATCHED_COMMENT
 
@@ -111,7 +110,6 @@ class Scanner:
                 else:
                     self.curr_state = self.dfa.start_state
 
-                    # Here we handle Invalid Number
                     token = self.text[self.reader.start_pointer:self.reader.end_pointer]
                     token_type = ErrorType.INVALID_NUMBER
 
@@ -144,9 +142,7 @@ class Scanner:
                 self.curr_state = next_state
 
         if self.check_EOF():
-            # print("-----")
             if not next_state.id == 13 and (self.curr_state.id == 11 or self.curr_state.id == 12):
-                # print("----")
                 errors.append((self.start_comment_line,
                                self.text[self.reader.start_pointer:self.reader.end_pointer][:7] + '...',
                                ErrorType.UNCLOSED_COMMENT.value))

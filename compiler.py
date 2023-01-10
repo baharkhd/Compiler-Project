@@ -1,23 +1,20 @@
 from parser_module import Parser
 import json
+from writer import *
+from reader import *
 
 '''
-NAME: DORNA DEHGHANI
-ID: 97105939
+NAME: Bahar Khodabakhshian
+ID: 97105906
 '''
-
-
-# TODO: put this in Reader class
-def read_json(path='table.json'):
-    f = open('table.json')
-    data = json.load(f)
-    f.close()
-    return data
 
 
 def run_compiler():
-    json_data = read_json('table.json')
-    parser = Parser(json_data)
+    reader = Reader()
+    writer = Writer()
+    
+    json_data = reader.read_json('table.json')
+    parser = Parser(json_data, reader, writer)
     parser.run_parser()
 
 

@@ -5,27 +5,10 @@ from statics import *
 from scanner_module import Scanner
 
 
-# TODO: transfer this function to Writer class
-def write_parse_tree(root_node, PATH='parse_tree.txt'):
-    tree_lines = ''
-    with open(PATH, "+w", encoding="utf-8") as file:
-        for pre, fill, node in RenderTree(root_node):
-            tree_lines += "%s%s" % (pre, node.name)
-            if node.name != "$":
-                tree_lines += '\n'
-
-        file.write(tree_lines)
-
-
-# TODO: transfer this function to Writer class
-def write_errors(all_errors, PATH='syntax_errors.txt'):
-    with open(PATH, "+w", encoding="utf-8") as file:
-        for err in all_errors:
-            file.write(err + "\n")
-
-
 class Parser:
-    def __init__(self, json_data):
+    def __init__(self, json_data, reader, writer):
+        self.reader = reader
+        self.writer = writer
         self.parse_table = json_data['parse_table']
         self.grammar = json_data['grammar']
         self.first = json_data['first']
@@ -45,7 +28,7 @@ class Parser:
         self.current_token = None
         self.need_next_token = True
 
-        self.scanner = Scanner()
+        self.scanner = Scanner(reader, writer)
 
         with open('parse_tree.txt', 'w') as f:
             pass
@@ -183,7 +166,7 @@ class Parser:
         self.all_tokens = all_tokens
         while True:
             if self.unexpected_EOF:
-                write_errors(self.all_errors)
+                self.writer.write_errors(self.all_errors)
                 break
 
             if self.need_next_token:
@@ -230,11 +213,11 @@ class Parser:
                 self.node_stack[2].parent = self.root_node
 
                 if len(self.all_errors) != 0:
-                    write_errors(self.all_errors)
+                    self.writer.write_errors(self.all_errors)
                 else:
-                    write_errors(['There is no syntax error.'])
+                    self.writer.write_errors(['There is no syntax error.'])
 
-                write_parse_tree(self.root_node)
+                self.writer.write_parse_tree(self.root_node)
                 break
 
             action_type, next_state = self.return_action(action)
@@ -281,16 +264,3 @@ class Parser:
                 self.node_stack += [parent_node, '']
 
                 self.need_next_token = False
-
-
-def read_json(path='table.json'):
-    f = open('table.json')
-    data = json.load(f)
-    f.close()
-
-    return data
-
-
-if __name__ == "__main__":
-    scanner = Scanner()
-    all_tokens = scanner.run_scanner()

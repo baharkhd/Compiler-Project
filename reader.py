@@ -1,5 +1,6 @@
 from statics import *
 import re
+import json
 
 
 class Reader:
@@ -65,7 +66,8 @@ class Reader:
                     break
                 self.string_read += next_char
 
-
-if __name__ == "__main__":
-    reader = Reader()
-    reader.read_input_code()
+    def read_json(path='table.json'):
+        f = open('table.json')
+        data = json.load(f)
+        f.close()
+        return data

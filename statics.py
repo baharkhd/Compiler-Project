@@ -77,18 +77,6 @@ tokens = {
     TokenType.WHITESPACE: ['', '\n', '\r', '\t', '\v', '\f']
 }
 
-
-def get_token_type(token):
-    if token in tokens[TokenType.KEYWORD]:
-        return TokenType.KEYWORD.value
-    elif token in tokens[TokenType.SYMBOL]:
-        return TokenType.SYMBOL.value
-    elif re.match(r'[0-9]+', token):
-        return TokenType.NUM.value
-    else:
-        return TokenType.ID.value
-
-
 class ParserErrorType(enum.Enum):
     ILLEGAL_ERROR = 'ILLEGAL_ERROR'
     INPUT_DISCARDED = 'INPUT_DISCARDED'
@@ -96,36 +84,3 @@ class ParserErrorType(enum.Enum):
     MISSING_ERROR = 'MISSING_ERROR'
     UNEXPECTED_EOF = 'UNEXPECTED_EOF'
 
-
-def make_test_json_data():
-    test_data = {
-        'terminals': ['int', '*', '+', '(', ')', '$'],
-        'non_terminals': ['T', 'E'],
-        'first': {
-
-        },
-
-        'follow': {
-
-        },
-
-        'grammar': {
-            '1': ['E', '->', 'T'],
-            '2': ['E', '->', 'T', '+', 'E'],
-            '3': ['T', '->', '(', 'E', ')'],
-            '4': ['T', '->', 'int', '*', 'T'],
-            '5': ['T', '->', 'int'],
-        },
-
-        'parse_table': {
-            '0': {'int': 'shift_4', '(': 'shift_3', 'E': '1', 'T': '2'},
-            '1': {'$': 'accept'},
-            '2': {'+': 'shift_6', ')': 'reduce_1', '$': 'reduce_1'},
-            '4': {'+': 'reduce_5', '*': 'shift_6', ')': 'reduce_5', '$': 'reduce_5'},
-            '6': {'int': 'shift_4', '(': 'shift_3', 'T': '9'},
-            '9': {'+': 'shift_4', ')': 'reduce_4', '$': 'reduce_4'},
-        }
-
-    }
-
-    return test_data

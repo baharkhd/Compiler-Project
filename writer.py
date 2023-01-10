@@ -42,3 +42,18 @@ class Writer:
     def write_parse_tree(self, root_node):
         for pre, fill, node in RenderTree(root_node):
             print("%s%s" % (pre, node.name))
+
+    def write_parse_tree(self, root_node, PATH='parse_tree.txt'):
+        tree_lines = ''
+        with open(PATH, "+w", encoding="utf-8") as file:
+            for pre, fill, node in RenderTree(root_node):
+                tree_lines += "%s%s" % (pre, node.name)
+                if node.name != "$":
+                    tree_lines += '\n'
+
+            file.write(tree_lines)
+
+    def write_errors(self, all_errors, PATH='syntax_errors.txt'):
+        with open(PATH, "+w", encoding="utf-8") as file:
+            for err in all_errors:
+                file.write(err + "\n")
