@@ -2,14 +2,14 @@ import enum
 import re
 
 
-INPUT_FILE_PATH = 'my_results/input.txt'
-TOKENS_FILE_PATH = 'my_results/tokens.txt'
-ERRORS_FILE_PATH = 'my_results/lexical_errors.txt'
-SYMBOLS_FILE_PATH = 'my_results/symbol_table.txt'
-#INPUT_FILE_PATH = 'input.txt'
-#TOKENS_FILE_PATH = 'tokens.txt'
-#ERRORS_FILE_PATH = 'lexical_errors.txt'
-#SYMBOLS_FILE_PATH = 'symbol_table.txt'
+#INPUT_FILE_PATH = 'my_results/input.txt'
+#TOKENS_FILE_PATH = 'my_results/tokens.txt'
+#ERRORS_FILE_PATH = 'my_results/lexical_errors.txt'
+#SYMBOLS_FILE_PATH = 'my_results/symbol_table.txt'
+INPUT_FILE_PATH = 'input.txt'
+TOKENS_FILE_PATH = 'tokens.txt'
+ERRORS_FILE_PATH = 'lexical_errors.txt'
+SYMBOLS_FILE_PATH = 'symbol_table.txt'
 
 
 class ActionType(enum.Enum):

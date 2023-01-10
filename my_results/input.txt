@@ -1,8 +1,8 @@
-/* sample 8 */
-
+/* sample 1 */
 
 void main(void){
-    if (a<b)
-        b = a;
-    }endif
+	int a;
+	int b;
+	a = b + 1;
+	return (a * b - 10) / 12;
 }

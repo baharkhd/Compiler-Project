@@ -74,8 +74,7 @@ class Parser:
         return False
 
     def add_error(self, token, error_type: ParserErrorType):
-        # TODO: here we should have a tuple as token
-        print("----- adding error {} for {}".format(error_type.value, token))
+        #print("----- adding error {} for {}".format(error_type.value, token))
         error = ''
         if error_type == ParserErrorType.ILLEGAL_ERROR:
             error = '#{} : syntax error , illegal {}'.format(self.line_num, token)
@@ -119,6 +118,10 @@ class Parser:
                 self.stack.pop()
                 self.stack.pop()
 
+                self.node_stack.pop()
+                self.node_stack.pop()
+
+
     def choose_next_token(self, state):
         goto_nonterms = []
         for k, v in self.parse_table[state].items():
@@ -151,6 +154,10 @@ class Parser:
             for (nt, goto) in goto_nonterms:
                 if next_token in self.follow[nt]:
                     self.stack += [(nt, nt), goto.split('_')[1]]
+
+                    # TODO: add to node stack
+                    self.node_stack += [Node(nt), '']
+
                     self.add_error(nt, ParserErrorType.MISSING_ERROR)
                     found_nt = True
                     break
@@ -175,7 +182,7 @@ class Parser:
             if self.unexpected_EOF:
                 write_errors(self.all_errors)
                 break
-            print("****", self.stack)
+            #print("****", self.stack)
             token_tuple = all_tokens[self.token_pointer]
             self.line_num = token_tuple[0]
             token_type = token_tuple[1]
@@ -193,18 +200,18 @@ class Parser:
 
             latest_state = self.stack[-1]
                 
-            print(token_tuple, token_type, token)
+            #print(token_tuple, token_type, token)
 
             if not token in self.parse_table[latest_state].keys():
                 # illegal error
-                self.add_error(token, ParserErrorType.ILLEGAL_ERROR)
+                self.add_error(token_tuple[2], ParserErrorType.ILLEGAL_ERROR)
                 self.get_closest_valid_state()
                 continue
 
             action = self.parse_table[latest_state][token]
             
             if action == 'accept':
-                print("!!!!!!!!accepted\n\n")
+                #print("!!!!!!!!accepted\n\n")
                 self.stack.pop()
                 root_node = self.stack.pop()
 
@@ -213,9 +220,8 @@ class Parser:
 
                 #print(self.root_node, self.node_stack[2])
 
-                for pre, fill, node in RenderTree(self.root_node):
-                    #print("+++", node)
-                    print("%s%s" % (pre, node.name))
+                #for pre, fill, node in RenderTree(self.root_node):
+                #    print("%s%s" % (pre, node.name))
 
                 if len(self.all_errors) != 0:
                     write_errors(self.all_errors)
@@ -250,11 +256,11 @@ class Parser:
                     right_tokens_num = 0
                     epsilon_node = Node('epsilon', parent=parent_node)
 
-                    print("Children:", right_tokens_num)
-                    print('epsilon')
+                    #print("Children:", right_tokens_num)
+                    #print('epsilon')
 
-                print("Parent:", parent_token)
-                print("Children:", right_tokens_num)
+                #print("Parent:", parent_token)
+                #print("Children:", right_tokens_num)
 
                 
                 popped_nodes = []
@@ -262,16 +268,16 @@ class Parser:
                     popped = self.stack.pop()
                     popped_node = self.node_stack.pop()
                     if i % 2 != 0:
-                        print(popped)
+                        #print(popped)
                         popped_nodes.append(popped_node)
-                print()
+                #print()
 
                 popped_nodes.reverse()
                 for pn in popped_nodes:
                     pn.parent = parent_node
 
                 latest_state = self.stack[-1]
-                print("++++", latest_state, parent_token)
+                #print("++++", latest_state, parent_token)
                 next_goto = self.parse_table[latest_state][parent_token].split("_")[1]
                 self.stack += [(parent_token, parent_token), next_goto]
                 self.node_stack += [parent_node, '']

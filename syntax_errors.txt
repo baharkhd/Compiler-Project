@@ -1,3 +1,1 @@
-#7 : syntax error , illegal }
-syntax error , discarded statement from stack
-#7 : syntax error , missing compound_stmt
+There is no syntax error.

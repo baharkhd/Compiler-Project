@@ -22,21 +22,21 @@ def run_compiler():
     json_data = read_json('table.json')
     parser = Parser(json_data)
 
-    for k, v in parser.parse_table.items():
-        print(k, ":", v)
+    #for k, v in parser.parse_table.items():
+    #    print(k, ":", v)
 
-    print("1.======================================================")
+    #print("1.======================================================")
 
-    for k, v in parser.grammar.items():
-        print(k, ":", v)
+    #for k, v in parser.grammar.items():
+    #    print(k, ":", v)
 
-    print("2.======================================================")   
+    #print("2.======================================================")   
 
-    print(len(all_tokens))
-    for tok in all_tokens:
-        print(tok)
+    #print(len(all_tokens))
+    #for tok in all_tokens:
+    #    print(tok)
 
-    print("3.======================================================") 
+    #print("3.======================================================") 
 
     
     parser.create_parse_tree(all_tokens)
